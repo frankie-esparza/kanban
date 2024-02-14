@@ -15,6 +15,7 @@ export const getEditablePropsFromItemType = (itemType) => {
         case 'board': return ['text'];
         case 'task': return ['text', 'status', 'parentId'];
         case 'subtask': return ['text', 'status', 'parentId'];
+        default: return null;
     }
 }
 
