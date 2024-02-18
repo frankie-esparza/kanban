@@ -12,28 +12,45 @@ app.use(cors()); // cors allows multiple ports running at once
 app.use(express.json()); // by using express.json we're able to access req.body
 
 // ----------------------------------------
-// ROUTES
+// HELPERS
 // ----------------------------------------
-// add task
-app.post('/tasks', async (req, res) => {
+const getColNamesString = (array) => {
+    return '(' + array.join(', ') + ')';
+}
+
+const getColValuesString = (array) => {
+    const numsArray = array.map((col, index) => '$' + String(index + 1));
+    return 'VALUES' + '(' + numsArray.join(', ') + ')';
+}
+
+// ----------------------------------------
+// ADD ROUTES
+// ----------------------------------------
+// Add status, board, task, or subtask
+app.post('/:tableName', async (req, res) => {
     try {
-        const { text, status_id, board_id } = req.body;
-        const newTask = await pool.query(
-            "INSERT INTO tasks (text, status_id, board_id) VALUES($1, $2, $3)",
-            [text, status_id, board_id]
+        // Get array of columns
+        const { tableName } = req.params;
+        const cols = await pool.query(`SELECT * FROM ${tableName}`); // get array of column names
+        const colNamesArray = cols.fields.map(col => col.name); // use the node-pg library built-in props .fields & .name
+        colNamesArray.shift(); // remove the 'id' column since it's auto-generated
+
+        // Convert column names (colNamesArray) into strings needed for query
+        const colNamesString = getColNamesString(colNamesArray);
+        const colValuesString = getColValuesString(colNamesArray);
+
+        // Add new status, board, task or subtask to database
+        const newRow = await pool.query(
+            `INSERT INTO ${tableName} ${colNamesString} ${colValuesString}`,
+            Object.values(req.body)
         );
-        res.json(newTask);
+        res.json(newRow);
     } catch (err) {
         console.error(err.message);
     }
 })
 
-// add board
-
-// Note:
-// server needs to be started after routes defined because
-// this file is executed in order
-// start the server
+// Start server
 app.listen(port, () => {
     console.log(`server has started on port ${port}...`);
 });
