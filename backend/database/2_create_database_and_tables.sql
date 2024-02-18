@@ -16,14 +16,14 @@ CREATE TABLE tasks (
     id uuid DEFAULT gen_random_uuid(),
     text VARCHAR(100) NOT NULL,
     PRIMARY KEY (id),
-    status_id uuid REFERENCES statuses(id),
-    board_id uuid REFERENCES boards(id)
+    status_id uuid REFERENCES statuses(id) ON DELETE RESTRICT,
+    board_id uuid REFERENCES boards(id) ON DELETE CASCADE
 );
 
 CREATE TABLE subtasks (
     id uuid DEFAULT gen_random_uuid(),
     text VARCHAR(100) NOT NULL,
     PRIMARY KEY (id),
-    status_id uuid REFERENCES statuses(id),
-    task_id uuid REFERENCES tasks(id)
+    status_id uuid REFERENCES statuses(id) ON DELETE RESTRICT,
+    task_id uuid REFERENCES tasks(id) ON DELETE CASCADE
 );

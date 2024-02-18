@@ -42,10 +42,9 @@ const getWhereString = (queryParams) => {
 // 'tableName' below refers to the name of the table in the PostgresSQL database
 //    e.g. statuses, boards, tasks or subtasks
 //
-// 'item' below refers to a row of a table, e.g. status, board, task, or sutbask
-//
+// 'item' below refers to a row of a table,
+//    e.g. status, board, task, or subtask
 // ----------------------------------------
-
 // ADD an item
 app.post('/:tableName', async (req, res) => {
     try {
@@ -81,9 +80,9 @@ app.get('/:tableName/:id', async (req, res) => {
     }
 })
 
-// GET ALL of a particular item
-// and if there are query parameters present, apply those filters to the get request
-//    e.g. /tasks?board_id=123&status=567 should return all tasks from board '123' with status '567'
+// GET ALL of a particular item & if there are query params, use them to filter data
+//    e.g. /tasks?board_id=123&status=567
+//         should return all tasks from board '123' with status '567'
 app.get('/:tableName', async (req, res) => {
     try {
         const { tableName } = req.params;
@@ -95,6 +94,19 @@ app.get('/:tableName', async (req, res) => {
             Object.values(queryParams)
         );
         res.json(allRows.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+})
+
+// DELETE an item by id
+// Note: see the create tables commands in the 'database' folder for details on ON DELETE constraints
+app.delete('/:tableName/:id', async (req, res) => {
+    try {
+        const { tableName, id } = req.params;
+        const deletedRow = await pool.query(`DELETE FROM ${tableName} WHERE id = $1`, [id]);
+        console.log('deletedRow', deletedRow);
+        res.json(`The item was successfully deleted`);
     } catch (err) {
         console.error(err.message);
     }
