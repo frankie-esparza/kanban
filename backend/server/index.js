@@ -38,7 +38,8 @@ const getWhereString = (queryParams) => {
 
 // ----------------------------------------
 // ROUTES
-//
+// ----------------------------------------
+// Notes:
 // 'tableName' below refers to the name of the table in the PostgresSQL database
 //    e.g. statuses, boards, tasks or subtasks
 //
@@ -69,11 +70,39 @@ app.post('/:tableName', async (req, res) => {
     }
 })
 
+// HELPER
+const getSetString = (bodyParams) => {
+    if (!bodyParams) return null;
+    let setString = '';
+    const colNames = Object.keys(bodyParams);
+    colNames.forEach((colName) => setString += `${colName} = '${bodyParams[colName]}'`);
+    return setString;
+}
+
+
+// EDIT an item by id
+app.patch('/:tableName/:id', async (req, res) => {
+    try {
+        const { tableName, id } = req.params;
+        const setString = getSetString(req.body);
+
+        const updatedRow = await pool.query(
+            `UPDATE ${tableName} SET ${setString} WHERE id = $1`, [id]
+        );
+
+        res.json(updatedRow);
+    } catch (err) {
+        console.error(err.message);
+    }
+})
+
 // GET an item by id
 app.get('/:tableName/:id', async (req, res) => {
     try {
         const { tableName, id } = req.params;
-        const row = await pool.query(`SELECT * FROM ${tableName} WHERE id = $1`, [id]);
+        const row = await pool.query(
+            `SELECT * FROM ${tableName} WHERE id = $1`, [id]
+        );
         res.json(row.rows);
     } catch (err) {
         console.error(err.message);
