@@ -14,19 +14,39 @@ app.use(express.json()); // by using express.json we're able to access req.body
 // ----------------------------------------
 // HELPERS
 // ----------------------------------------
-const getColNamesString = (array) => {
-    return '(' + array.join(', ') + ')';
+const getColNamesString = (colNames) => {
+    return '(' + colNames.join(', ') + ')';
 }
 
-const getColValuesString = (array) => {
-    const numsArray = array.map((col, index) => '$' + String(index + 1));
+const getColValuesString = (colNames) => {
+    const numsArray = colNames.map((col, index) => '$' + String(index + 1));
     return 'VALUES' + '(' + numsArray.join(', ') + ')';
+}
+
+const getWhereString = (queryParams) => {
+    if (!queryParams) return null;
+
+    let whereString = 'WHERE ';
+    const colNames = Object.keys(queryParams);
+
+    colNames.forEach((colName, index) => {
+        if (index !== 0) whereString += 'AND '
+        whereString += (colName + ' = $' + String(index + 1) + ' ');
+    });
+    return whereString;
 }
 
 // ----------------------------------------
 // ROUTES
+//
+// 'tableName' below refers to the name of the table in the PostgresSQL database
+//    e.g. statuses, boards, tasks or subtasks
+//
+// 'item' below refers to a row of a table, e.g. status, board, task, or sutbask
+//
 // ----------------------------------------
-// ADD status, board, task, or subtask
+
+// ADD an item
 app.post('/:tableName', async (req, res) => {
     try {
         // Get array of columns
@@ -50,11 +70,10 @@ app.post('/:tableName', async (req, res) => {
     }
 })
 
-// GET status, board, task, or subtask
+// GET an item by id
 app.get('/:tableName/:id', async (req, res) => {
     try {
         const { tableName, id } = req.params;
-        console.log('id', id);
         const row = await pool.query(`SELECT * FROM ${tableName} WHERE id = $1`, [id]);
         res.json(row.rows);
     } catch (err) {
@@ -62,11 +81,19 @@ app.get('/:tableName/:id', async (req, res) => {
     }
 })
 
-// GET ALL statuses, boards, tasks, or subtasks
+// GET ALL of a particular item
+// and if there are query parameters present, apply those filters to the get request
+//    e.g. /tasks?board_id=123&status=567 should return all tasks from board '123' with status '567'
 app.get('/:tableName', async (req, res) => {
     try {
         const { tableName } = req.params;
-        const allRows = await pool.query(`SELECT * FROM ${tableName}`);
+        const queryParams = req.query;
+        const whereString = getWhereString(queryParams);
+
+        const allRows = await pool.query(
+            `SELECT * FROM ${tableName} ${whereString}`,
+            Object.values(queryParams)
+        );
         res.json(allRows.rows);
     } catch (err) {
         console.error(err.message);
