@@ -24,9 +24,9 @@ const getColValuesString = (array) => {
 }
 
 // ----------------------------------------
-// ADD ROUTES
+// ROUTES
 // ----------------------------------------
-// Add status, board, task, or subtask
+// ADD status, board, task, or subtask
 app.post('/:tableName', async (req, res) => {
     try {
         // Get array of columns
@@ -50,7 +50,32 @@ app.post('/:tableName', async (req, res) => {
     }
 })
 
-// Start server
+// GET status, board, task, or subtask
+app.get('/:tableName/:id', async (req, res) => {
+    try {
+        const { tableName, id } = req.params;
+        console.log('id', id);
+        const row = await pool.query(`SELECT * FROM ${tableName} WHERE id = $1`, [id]);
+        res.json(row.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+})
+
+// GET ALL statuses, boards, tasks, or subtasks
+app.get('/:tableName', async (req, res) => {
+    try {
+        const { tableName } = req.params;
+        const allRows = await pool.query(`SELECT * FROM ${tableName}`);
+        res.json(allRows.rows);
+    } catch (err) {
+        console.error(err.message);
+    }
+})
+
+// ----------------------------------------
+// START SERVER
+// ----------------------------------------
 app.listen(port, () => {
     console.log(`server has started on port ${port}...`);
 });
