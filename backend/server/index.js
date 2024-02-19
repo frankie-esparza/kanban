@@ -14,83 +14,63 @@ app.use(express.json()); // by using express.json we're able to access req.body
 // ----------------------------------------
 // HELPERS
 // ----------------------------------------
-const getColNamesString = (colNames) => {
-    return '(' + colNames.join(', ') + ')';
+const getArrayOfVars = (obj) => Object.keys(obj).map((key, i) => '$' + `${i + 1}`);
+const getArrayOfKeyValuePairStrings = (obj) => Object.keys(obj).map(key => `${key} = ${obj[key]}`);
+
+const getStringOfValues = (arr) => arr.join(', ')
+const getStringOfKeyValuePairs = (obj) => getStringOfValues(getArrayOfKeyValuePairStrings(obj));
+
+// wrapper function to wrap all queries in try-catch error block
+const queryWrapper = (queryFunc) => {
+    return async (req, res) => {
+        try {
+            let result = await queryFunc(req, res);
+            res.json(result);
+        } catch (err) {
+            console.error(err.message);
+        }
+    }
 }
 
-const getColValuesString = (colNames) => {
-    const numsArray = colNames.map((col, index) => '$' + String(index + 1));
-    return 'VALUES' + '(' + numsArray.join(', ') + ')';
+const postFunc = async (req, res) => {
+    const { tableName } = req.params;
+    const body = req.body;
+    const stringOfKeys = getStringOfValues(Object.keys(body));
+    const stringOfVars = getStringOfValues(getArrayOfVars(body));
+    const arrayOfValues = Object.values(body);
+    return await pool.query(`INSERT INTO ${tableName} (${stringOfKeys}) VALUES (${stringOfVars})`, arrayOfValues);
 }
 
-const getWhereString = (queryParams) => {
-    if (!queryParams) return null;
+const patchFunc = async (req, res) => {
 
-    let whereString = 'WHERE ';
-    const colNames = Object.keys(queryParams);
-
-    colNames.forEach((colName, index) => {
-        if (index !== 0) whereString += 'AND '
-        whereString += (colName + ' = $' + String(index + 1) + ' ');
-    });
-    return whereString;
 }
 
 // ----------------------------------------
 // ROUTES
 // ----------------------------------------
-// Notes:
-// 'tableName' below refers to the name of the table in the PostgresSQL database
-//    e.g. statuses, boards, tasks or subtasks
-//
-// 'item' below refers to a row of a table,
-//    e.g. status, board, task, or subtask
-// ----------------------------------------
 // ADD an item
-app.post('/:tableName', async (req, res) => {
-    try {
-        // Get array of columns
-        const { tableName } = req.params;
-        const cols = await pool.query(`SELECT * FROM ${tableName}`); // get array of column names
-        const colNamesArray = cols.fields.map(col => col.name); // use the node-pg library built-in props .fields & .name
-        colNamesArray.shift(); // remove the 'id' column since it's auto-generated
+app.post('/:tableName', queryWrapper(postFunc));
 
-        // Convert column names (colNamesArray) into strings needed for query
-        const colNamesString = getColNamesString(colNamesArray);
-        const colValuesString = getColValuesString(colNamesArray);
-
-        // Add new status, board, task or subtask to database
-        const newRow = await pool.query(
-            `INSERT INTO ${tableName} ${colNamesString} ${colValuesString}`,
-            Object.values(req.body)
-        );
-        res.json(newRow);
-    } catch (err) {
-        console.error(err.message);
-    }
-})
-
-// HELPER
-const getSetString = (bodyParams) => {
-    if (!bodyParams) return null;
-    let setString = '';
-    const colNames = Object.keys(bodyParams);
-    colNames.forEach((colName) => setString += `${colName} = '${bodyParams[colName]}'`);
-    return setString;
-}
+// ----------------------------------------
+//
+// TODO
+// - update rest of routes to use the wrapper
+// - split routes file into multiple routes?
+//
+// ----------------------------------------
 
 
 // EDIT an item by id
 app.patch('/:tableName/:id', async (req, res) => {
     try {
         const { tableName, id } = req.params;
-        const setString = getSetString(req.body);
-
-        const updatedRow = await pool.query(
-            `UPDATE ${tableName} SET ${setString} WHERE id = $1`, [id]
+        const stringOfKeyValuePairs = getStringOfKeyValuePairs(req.body);
+        const result = await pool.query(`
+            UPDATE ${tableName}
+            SET ${stringOfKeyValuePairs}
+            WHERE id = ${id}`
         );
-
-        res.json(updatedRow);
+        res.json(result);
     } catch (err) {
         console.error(err.message);
     }
@@ -100,29 +80,27 @@ app.patch('/:tableName/:id', async (req, res) => {
 app.get('/:tableName/:id', async (req, res) => {
     try {
         const { tableName, id } = req.params;
-        const row = await pool.query(
-            `SELECT * FROM ${tableName} WHERE id = $1`, [id]
+        const result = await pool.query(`
+            SELECT * FROM ${tableName}
+            WHERE id = ${id}`
         );
-        res.json(row.rows);
+        res.json(result);
     } catch (err) {
         console.error(err.message);
     }
 })
 
 // GET ALL of a particular item & if there are query params, use them to filter data
-//    e.g. /tasks?board_id=123&status=567
-//         should return all tasks from board '123' with status '567'
+//    e.g. /tasks?board_id=123&status=567 should return all tasks from board '123' with status '567'
 app.get('/:tableName', async (req, res) => {
     try {
         const { tableName } = req.params;
-        const queryParams = req.query;
-        const whereString = getWhereString(queryParams);
-
-        const allRows = await pool.query(
-            `SELECT * FROM ${tableName} ${whereString}`,
-            Object.values(queryParams)
+        const stringOfKeyValuePairs = getStringOfKeyValuePairs(req.query);
+        const result = await pool.query(`
+            SELECT * FROM ${tableName}
+            WHERE ${stringOfKeyValuePairs}`
         );
-        res.json(allRows.rows);
+        res.json(result);
     } catch (err) {
         console.error(err.message);
     }
@@ -133,8 +111,10 @@ app.get('/:tableName', async (req, res) => {
 app.delete('/:tableName/:id', async (req, res) => {
     try {
         const { tableName, id } = req.params;
-        const deletedRow = await pool.query(`DELETE FROM ${tableName} WHERE id = $1`, [id]);
-        console.log('deletedRow', deletedRow);
+        await pool.query(`
+            DELETE FROM ${tableName}
+            WHERE id = ${id}`
+        );
         res.json(`The item was successfully deleted`);
     } catch (err) {
         console.error(err.message);
