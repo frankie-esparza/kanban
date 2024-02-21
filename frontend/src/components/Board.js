@@ -5,7 +5,7 @@ import Form from './forms/Form.js';
 import { v4 as uuidv4 } from 'uuid';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import { fetchWrapper } from '../helpers/fetchWrapper.js';
+import { fetchWrapper } from '../helpers/fetchHelpers.js';
 import { port } from './KanbanApp.js';
 
 function Board({ board, boards, darkMode, setDarkMode }) {
@@ -26,10 +26,7 @@ function Board({ board, boards, darkMode, setDarkMode }) {
         const data = await res.json();
         setStatuses(data);
     };
-
-    useEffect(() => {
-        getStatuses();
-    }, [])
+    useEffect(() => { fetchWrapper(getStatuses()) }, [])
 
     // Get Tasks
     const [tasks, setTasks] = useState([]);
@@ -38,11 +35,7 @@ function Board({ board, boards, darkMode, setDarkMode }) {
         const data = await res.json();
         setTasks(data);
     };
-
-    useEffect(() => {
-        getTasks();
-    }, [])
-
+    useEffect(() => { fetchWrapper(getTasks()) }, [])
 
     return (
         <Paper>
