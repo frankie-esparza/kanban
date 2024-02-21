@@ -11,7 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip from '@mui/material/Tooltip';
 import Input from './Input';
 import useFormState from '../../hooks/useFormState';
-import { KanbanContext, KanbanDispatchContext } from '../../contexts/KanbanContext';
+import { KanbanContext } from '../../contexts/KanbanContext';
 import { v4 as uuidv4 } from 'uuid';
 import { capitalize } from '../../helpers/helpers';
 import { getFormTitle, getEditablePropsFromItemType, getInitialFormState } from '../../helpers/formHelpers';
@@ -20,138 +20,138 @@ import { fetchWrapper } from '../../helpers/fetchHelpers.js';
 import { port } from '../KanbanApp.js';
 
 function Form({ formType, itemType, item = null }) {
-    // Contexts
-    const kanban = useContext(KanbanContext); // holds board, task, subtask, status data
-    const dispatch = useContext(KanbanDispatchContext); // holds add/edit/delete actions for the above
+    // // Contexts
+    // const kanban = useContext(KanbanContext); // holds board, task, subtask, status data
 
-    // Form State
-    let editableProps = getEditablePropsFromItemType(itemType); // some props like id & itemType can't be edited
-    let initialFormState = getInitialFormState(editableProps, item, itemType, kanban);
-    const [formState, handleInputChange, handleFormReset] = useFormState({ ...initialFormState });
-    const [formOpen, setFormOpen] = useState(false);
+    // // Form State
+    // let editableProps = getEditablePropsFromItemType(itemType); // some props like id & itemType can't be edited
+    // let initialFormState = getInitialFormState(editableProps, item, itemType, kanban);
+    // const [formState, handleInputChange, handleFormReset] = useFormState({ ...initialFormState });
+    // const [formOpen, setFormOpen] = useState(false);
 
-    // Other Form setup
-    const formTitle = getFormTitle(formType, itemType, item);
+    // // Other Form setup
+    // const formTitle = getFormTitle(formType, itemType, item);
 
-    // Get Subtasks
-    const [subtasks, setSubtasks] = useState([]);
-    const getSubtasks = async () => {
-        if (itemType !== 'task' || !item) return null;
-        const res = await fetch(`http://localhost:${port}/subtasks?task_id=${item.id}`);
-        const data = await res.json();
-        setSubtasks(data);
-    };
-    useEffect(() => { fetchWrapper(getSubtasks()) }, []);
+    // // Get Subtasks
+    // const [subtasks, setSubtasks] = useState([]);
+    // const getSubtasks = async () => {
+    //     if (itemType !== 'task' || !item) return null;
+    //     const res = await fetch(`http://localhost:${port}/subtasks?task_id=${item.id}`);
+    //     const data = await res.json();
+    //     setSubtasks(data);
+    // };
+    // useEffect(() => { fetchWrapper(getSubtasks()) }, []);
 
-    // Event Handlers
-    const handleOpen = () => setFormOpen(true);
-    const handleClose = () => setFormOpen(false);
-    const handleDeleteClick = () => dispatch({ type: 'DELETE', oldItem: item });
+    // // Event Handlers
+    // const handleOpen = () => setFormOpen(true);
+    // const handleClose = () => setFormOpen(false);
+    // const handleDeleteClick = () => dispatch({ type: 'DELETE', oldItem: item });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setFormOpen(false);
-        handleFormReset();
-        updateKanbanContext();
-    }
-    function updateKanbanContext() {
-        switch (formType) {
-            case 'ADD': return dispatch({ type: 'ADD', newItem: { ...formState }, itemType: itemType });
-            case 'EDIT': return dispatch({ type: 'EDIT', newItem: { ...formState }, oldItem: item });
-            default: return null;
-        }
-    }
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     setFormOpen(false);
+    //     handleFormReset();
+    //     updateKanbanContext();
+    // }
+    // function updateKanbanContext() {
+    //     switch (formType) {
+    //         case 'ADD': return dispatch({ type: 'ADD', newItem: { ...formState }, itemType: itemType });
+    //         case 'EDIT': return dispatch({ type: 'EDIT', newItem: { ...formState }, oldItem: item });
+    //         default: return null;
+    //     }
+    // }
 
-    // Form Inputs
-    const inputContent = (
-        <ul>
-            {editableProps.map(prop =>
-                <li key={uuidv4()}>
-                    <Box sx={{ padding: 2 }}>
-                        <Input
-                            prop={prop}
-                            itemType={itemType}
-                            formState={formState}
-                            handleInputChange={handleInputChange}
-                        />
-                    </Box>
-                </li>)}
-        </ul>
-    );
+    // // Form Inputs
+    // const inputContent = (
+    //     <ul>
+    //         {editableProps.map(prop =>
+    //             <li key={uuidv4()}>
+    //                 <Box sx={{ padding: 2 }}>
+    //                     <Input
+    //                         prop={prop}
+    //                         itemType={itemType}
+    //                         formState={formState}
+    //                         handleInputChange={handleInputChange}
+    //                     />
+    //                 </Box>
+    //             </li>)}
+    //     </ul>
+    // );
 
-    // Subtasks (if applicable)
-    // - only tasks can have subtasks
-    // - each subtask can be edited (Note the recursion below, each subtask contains a Form component)
-    let subtasksContent;
-    if (subtasks && subtasks.length > 0) {
-        subtasksContent = (
-            <>
-                <DialogContentText>Subtasks</DialogContentText>
-                {subtasks && subtasks.map(subtask =>
-                    <Box key={uuidv4()} sx={{ padding: 1 }}>
-                        <Form formType='EDIT' itemType='subtask' item={subtask} />
-                    </Box>)}
-            </>
-        );
-    }
+    // // Subtasks (if applicable)
+    // // - only tasks can have subtasks
+    // // - each subtask can be edited (Note the recursion below, each subtask contains a Form component)
+    // let subtasksContent;
+    // if (subtasks && subtasks.length > 0) {
+    //     subtasksContent = (
+    //         <>
+    //             <DialogContentText>Subtasks</DialogContentText>
+    //             {subtasks && subtasks.map(subtask =>
+    //                 <Box key={uuidv4()} sx={{ padding: 1 }}>
+    //                     <Form formType='EDIT' itemType='subtask' item={subtask} />
+    //                 </Box>)}
+    //         </>
+    //     );
+    // }
 
-    // Delete Button
-    let deleteButtonContent;
-    if (formType === 'EDIT') {
-        deleteButtonContent = (
-            <Tooltip title={`Delete ${capitalize(itemType)}`}>
-                <IconButton className="delete-button" color="primary" onClick={handleDeleteClick}><DeleteIcon /></IconButton>
-            </Tooltip>
-        );
-    }
+    // // Delete Button
+    // let deleteButtonContent;
+    // if (formType === 'EDIT') {
+    //     deleteButtonContent = (
+    //         <Tooltip title={`Delete ${capitalize(itemType)}`}>
+    //             <IconButton className="delete-button" color="primary" onClick={handleDeleteClick}><DeleteIcon /></IconButton>
+    //         </Tooltip>
+    //     );
+    // }
 
-    // styles
-    const buttonStyles = {
-        color: 'text.primary',
-        bgcolor: (formType === 'EDIT' ? 'background.secondary' : 'background.primary'),
-        padding: (formType === 'EDIT' ? 2 : 1),
-        textTransform: (formType === 'EDIT' ? 'capitalize' : 'uppercase'),
-        width: (formType === 'EDIT' ? 250 : null),
-        alignContent: 'center',
-        minHeight: (formType === 'EDIT' ? 100 : null),
-    };
+    // // styles
+    // const buttonStyles = {
+    //     color: 'text.primary',
+    //     bgcolor: (formType === 'EDIT' ? 'background.secondary' : 'background.primary'),
+    //     padding: (formType === 'EDIT' ? 2 : 1),
+    //     textTransform: (formType === 'EDIT' ? 'capitalize' : 'uppercase'),
+    //     width: (formType === 'EDIT' ? 250 : null),
+    //     alignContent: 'center',
+    //     minHeight: (formType === 'EDIT' ? 100 : null),
+    // };
 
     return (
-        <>
-            <ButtonGroup
-                variant="contained"
-                sx={buttonStyles}
-                onClick={handleOpen}>
-                <Box>
-                    <h4> {formTitle}</h4>
-                    {subtasks && subtasks.length > 0 && <p>{`${subtasks.length} subtasks`}</p>}
-                </Box>
+        <h1>Form</h1>
+        // <>
+        //     <ButtonGroup
+        //         variant="contained"
+        //         sx={buttonStyles}
+        //         onClick={handleOpen}>
+        //         <Box>
+        //             <h4> {formTitle}</h4>
+        //             {subtasks && subtasks.length > 0 && <p>{`${subtasks.length} subtasks`}</p>}
+        //         </Box>
 
-            </ButtonGroup >
-            {formOpen &&
-                <Dialog
-                    open={formOpen}
-                    onClose={handleClose}
-                    PaperProps={{
-                        component: 'form',
-                        onSubmit: handleSubmit
-                    }}
-                >
-                    <ButtonGroup variant="outlined">
-                        <DialogTitle>{formTitle}</DialogTitle>
-                        {formType === 'EDIT' && deleteButtonContent}
-                    </ButtonGroup>
-                    <DialogContent>
-                        {inputContent}
-                        {subtasks && subtasksContent}
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button type="submit">Submit</Button>
-                    </DialogActions>
-                </Dialog >
-            }
-        </>
+        //     </ButtonGroup >
+        //     {formOpen &&
+        //         <Dialog
+        //             open={formOpen}
+        //             onClose={handleClose}
+        //             PaperProps={{
+        //                 component: 'form',
+        //                 onSubmit: handleSubmit
+        //             }}
+        //         >
+        //             <ButtonGroup variant="outlined">
+        //                 <DialogTitle>{formTitle}</DialogTitle>
+        //                 {formType === 'EDIT' && deleteButtonContent}
+        //             </ButtonGroup>
+        //             <DialogContent>
+        //                 {inputContent}
+        //                 {subtasks && subtasksContent}
+        //             </DialogContent>
+        //             <DialogActions>
+        //                 <Button onClick={handleClose}>Cancel</Button>
+        //                 <Button type="submit">Submit</Button>
+        //             </DialogActions>
+        //         </Dialog >
+        //     }
+        // </>
     )
 }
 

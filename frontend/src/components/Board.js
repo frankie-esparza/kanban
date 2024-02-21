@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from 'react';
+import { useContext, useState, useEffect, memo } from 'react';
 import NavTop from './navs/NavTop.js';
 import NavLeft from './navs/NavLeft.js';
 import Form from './forms/Form.js';
@@ -7,8 +7,28 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { fetchWrapper } from '../helpers/fetchHelpers.js';
 import { port } from './KanbanApp.js';
+import { KanbanContext } from '../contexts/KanbanContext.js';
 
-function Board({ board, boards, darkMode, setDarkMode }) {
+function Board({ board, darkMode, setDarkMode }) {
+    // Context
+    const { statuses, setStatuses, boards, tasks, setTasks } = useContext(KanbanContext);
+
+    // Get Statuses
+    const getStatuses = async () => {
+        const res = await fetch(`http://localhost:${port}/statuses`);
+        const data = await res.json();
+        setStatuses(data);
+    };
+    useEffect(() => { fetchWrapper(getStatuses) }, [])
+
+    // Get Tasks
+    const getTasks = async () => {
+        const res = await fetch(`http://localhost:${port}/tasks?board_id=${board.id}`);
+        const data = await res.json();
+        setTasks(data);
+    };
+    useEffect(() => { fetchWrapper(getTasks) }, [])
+
     // Styles
     const stylesLeft = { display: 'flex', flexDirection: 'row', width: '100vw', height: '100vh', justifyContent: 'baseline' };
     const stylesNavLeft = { width: '10%', minWidth: 230, height: '100%', bgcolor: 'background.secondary' };
@@ -19,25 +39,9 @@ function Board({ board, boards, darkMode, setDarkMode }) {
     const stylesTask = { padding: 1 };
     const stylesAddStatusButton = { marginTop: 2 };
 
-    // Get Statuses
-    const [statuses, setStatuses] = useState([]);
-    const getStatuses = async () => {
-        const res = await fetch(`http://localhost:${port}/statuses`);
-        const data = await res.json();
-        setStatuses(data);
-    };
-    useEffect(() => { fetchWrapper(getStatuses()) }, [])
-
-    // Get Tasks
-    const [tasks, setTasks] = useState([]);
-    const getTasks = async () => {
-        const res = await fetch(`http://localhost:${port}/tasks?board_id=${board.id}`);
-        const data = await res.json();
-        setTasks(data);
-    };
-    useEffect(() => { fetchWrapper(getTasks()) }, [])
 
     return (
+        board &&
         <Paper>
             <Box sx={stylesLeft} >
                 <Box
@@ -73,5 +77,7 @@ function Board({ board, boards, darkMode, setDarkMode }) {
         </Paper >
     );
 }
+
+
 
 export default memo(Board);
