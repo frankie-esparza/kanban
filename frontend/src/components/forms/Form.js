@@ -1,4 +1,4 @@
-import React, { useContext, useState, memo } from 'react';
+import React, { useContext, useEffect, useState, memo } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -14,13 +14,10 @@ import useFormState from '../../hooks/useFormState';
 import { KanbanContext, KanbanDispatchContext } from '../../contexts/KanbanContext';
 import { v4 as uuidv4 } from 'uuid';
 import { capitalize } from '../../helpers/helpers';
-import {
-    getFormTitle,
-    getEditablePropsFromItemType,
-    getInitialFormState,
-    getSubtasks
-} from '../../helpers/formHelpers';
+import { getFormTitle, getEditablePropsFromItemType, getInitialFormState } from '../../helpers/formHelpers';
 import Box from '@mui/material/Box';
+import { fetchWrapper } from '../../helpers/fetchHelpers.js';
+import { port } from '../KanbanApp.js';
 
 function Form({ formType, itemType, item = null }) {
     // Contexts
@@ -35,7 +32,16 @@ function Form({ formType, itemType, item = null }) {
 
     // Other Form setup
     const formTitle = getFormTitle(formType, itemType, item);
-    const subtasks = (itemType === 'task') ? getSubtasks(item, kanban) : null;
+
+    // Get Subtasks
+    const [subtasks, setSubtasks] = useState([]);
+    const getSubtasks = async () => {
+        if (itemType !== 'task' || !item) return null;
+        const res = await fetch(`http://localhost:${port}/subtasks?task_id=${item.id}`);
+        const data = await res.json();
+        setSubtasks(data);
+    };
+    useEffect(() => { fetchWrapper(getSubtasks()) }, []);
 
     // Event Handlers
     const handleOpen = () => setFormOpen(true);

@@ -1,3 +1,5 @@
+import { port } from '../components/KanbanApp';
+
 export const fetchWrapper = async (fetchFunc) => {
     try {
         fetchFunc();

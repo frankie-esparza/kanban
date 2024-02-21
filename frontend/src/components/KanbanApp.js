@@ -6,6 +6,7 @@ import { convertToKebabCase } from '../helpers/helpers.js';
 import Board from './Board.js';
 import { v4 as uuidv4 } from 'uuid';
 import { getDesignTokens } from '../helpers/themeHelpers.js';
+import { fetchWrapper } from '../helpers/fetchHelpers.js';
 
 export const port = 5000;
 
@@ -23,15 +24,7 @@ function KanbanApp() {
         const data = await res.json();
         setBoards(data);
     };
-
-    useEffect(() => {
-        getBoards();
-    }, [])
-
-    // OLD
-    // const kanban = useContext(KanbanContext);
-    // const boards = kanban.boards;
-
+    useEffect(() => { fetchWrapper(getBoards) }, [])
 
     return (
         <ThemeProvider theme={theme}>
