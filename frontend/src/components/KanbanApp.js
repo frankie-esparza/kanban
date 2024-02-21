@@ -11,20 +11,22 @@ import { fetchWrapper } from '../helpers/fetchHelpers.js';
 export const port = 5000;
 
 function KanbanApp() {
-    // Theme
-    let localStorageDarkMode = JSON.parse(window.localStorage.getItem('darkMode'));
-    const [darkMode, setDarkMode] = useState((localStorageDarkMode !== null) ? localStorageDarkMode : true);
-    window.localStorage.setItem('darkMode', JSON.stringify(darkMode));
-    const theme = createTheme(getDesignTokens(darkMode ? 'dark' : 'light'));
+    // Context
+    const { boards, setBoards } = useContext(KanbanContext);
 
-    // Get Tasks for this board
-    const [boards, setBoards] = useState([]);
+    // Get Boards
     const getBoards = async () => {
         const res = await fetch(`http://localhost:${port}/boards`);
         const data = await res.json();
         setBoards(data);
     };
     useEffect(() => { fetchWrapper(getBoards) }, [])
+
+    // Theme
+    let localStorageDarkMode = JSON.parse(window.localStorage.getItem('darkMode'));
+    const [darkMode, setDarkMode] = useState((localStorageDarkMode !== null) ? localStorageDarkMode : true);
+    window.localStorage.setItem('darkMode', JSON.stringify(darkMode));
+    const theme = createTheme(getDesignTokens(darkMode ? 'dark' : 'light'));
 
     return (
         <ThemeProvider theme={theme}>
@@ -37,7 +39,6 @@ function KanbanApp() {
                             element={
                                 <Board
                                     board={board}
-                                    boards={boards}
                                     darkMode={darkMode}
                                     setDarkMode={setDarkMode}
                                 />
