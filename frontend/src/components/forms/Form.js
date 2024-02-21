@@ -99,6 +99,7 @@ function Form({ formType, itemType, item = null }) {
         );
     }
 
+    // styles
     const buttonStyles = {
         color: 'text.primary',
         bgcolor: (formType === 'EDIT' ? 'background.secondary' : 'background.primary'),

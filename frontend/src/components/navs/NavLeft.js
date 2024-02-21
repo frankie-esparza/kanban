@@ -9,9 +9,7 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 
-function NavLeft({ darkMode, setDarkMode }) {
-    const kanban = useContext(KanbanContext);
-    const boards = kanban.boards;
+function NavLeft({ boards, darkMode, setDarkMode }) {
     const location = useLocation().pathname.split('/')[1];
     const currentBoard = convertFromKebabCase(location);
 
