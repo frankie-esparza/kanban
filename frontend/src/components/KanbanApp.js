@@ -1,4 +1,4 @@
-import React, { useContext, useState, memo } from 'react';
+import React, { useContext, useState, useEffect, memo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { KanbanContext } from '../contexts/KanbanContext.js'
@@ -7,13 +7,31 @@ import Board from './Board.js';
 import { v4 as uuidv4 } from 'uuid';
 import { getDesignTokens } from '../helpers/themeHelpers.js';
 
+export const port = 5000;
+
 function KanbanApp() {
-    const kanban = useContext(KanbanContext);
-    const boards = kanban.boards;
+    // Theme
     let localStorageDarkMode = JSON.parse(window.localStorage.getItem('darkMode'));
     const [darkMode, setDarkMode] = useState((localStorageDarkMode !== null) ? localStorageDarkMode : true);
     window.localStorage.setItem('darkMode', JSON.stringify(darkMode));
     const theme = createTheme(getDesignTokens(darkMode ? 'dark' : 'light'));
+
+    // Get Tasks for this board
+    const [boards, setBoards] = useState([]);
+    const getBoards = async () => {
+        const res = await fetch(`http://localhost:${port}/boards`);
+        const data = await res.json();
+        setBoards(data);
+    };
+
+    useEffect(() => {
+        getBoards();
+    }, [])
+
+    // OLD
+    // const kanban = useContext(KanbanContext);
+    // const boards = kanban.boards;
+
 
     return (
         <ThemeProvider theme={theme}>
@@ -26,6 +44,7 @@ function KanbanApp() {
                             element={
                                 <Board
                                     board={board}
+                                    boards={boards}
                                     darkMode={darkMode}
                                     setDarkMode={setDarkMode}
                                 />
