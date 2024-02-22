@@ -10,9 +10,12 @@ export function KanbanProvider(props) {
     const [tasks, setTasks] = useState([]);
     const [subtasks, setSubtasks] = useState([]);
 
+    // -----------
     // HELPERS
+    // ------------
+    // Updates state after making a fetch call
     const updateState = (itemType, data) => {
-        console.log('state updated')
+        console.log('updateState', itemType, data);
         switch (itemType) {
             case 'status': setStatuses(data); break;
             case 'board': setBoards(data); break;
@@ -28,6 +31,26 @@ export function KanbanProvider(props) {
         const res = await fetch(`http://localhost:${port}/${tableName}`);
         const items = await res.json();
         updateState(itemType, items);
+    }
+
+    // EDIT
+    const editItem = async (itemType, id, newItemData) => {
+        const tableName = getTableNameFromItemType(itemType);
+        const res = await fetch(`http://localhost:${port}/${tableName}/${id}`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "body": JSON.stringify(newItemData)
+                }
+            });
+        const newItem = await res.json();
+
+        console.log('newItem', newItem);
+
+        const oldItems = getItems(itemType);
+        const newItems = oldItems.map(item => (item.id === id ? newItem : item));
+        updateState(itemType, newItems);
     }
 
     // const getTasksForBoardAndStatus = async (boardId, statusId) => {
@@ -67,24 +90,6 @@ export function KanbanProvider(props) {
         updateState(itemType, newItems);
     }
 
-    // EDIT
-    const editItem = async (itemType, id, newItemData) => {
-        const tableName = getTableNameFromItemType(itemType);
-        const res = await fetch(`http://localhost:${port}/${tableName}/${id}`,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                    "body": JSON.stringify(newItemData)
-                }
-            });
-        const newItem = await res.json();
-
-        const oldItems = getItems(itemType);
-        const newItems = oldItems.map(item => (item.id === id ? newItem : item));
-        updateState(itemType, newItems);
-    }
-
     // DELETE
     const deleteItem = async (itemType, id) => {
         const tableName = getTableNameFromItemType(itemType);
@@ -103,9 +108,7 @@ export function KanbanProvider(props) {
             tasks,
             subtasks,
             getItems,
-            addItem,
-            editItem,
-            deleteItem
+            updateState
         }}>
             {props.children}
         </KanbanContext.Provider>

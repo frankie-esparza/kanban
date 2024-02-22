@@ -17,21 +17,13 @@ import { capitalize } from '../helpers/helpers.js';
 import { getFormTitle, getEditablePropsFromItemType, getInitialFormState } from '../helpers/formHelpers.js';
 import Box from '@mui/material/Box';
 import { fetchWrapper } from '../helpers/fetchHelpers.js';
+import axios from "axios";
 
 function Task({ task }) {
     const port = 5000;
     const itemType = 'task';
-    const { statuses, boards, tasks, subtasks, editItem, deleteItem } = useContext(KanbanContext);
+    const { statuses, boards, tasks, subtasks, getItems, deleteItem } = useContext(KanbanContext);
     const [subtasksShown, setSubTasksShown] = useState([]);
-
-    useEffect(() => {
-        const getSubTasksForTask = async (taskId) => {
-            const res = await fetch(`http://localhost:${port}/subtasks?task_id=${taskId}`);
-            const tasks = await res.json();
-            setSubTasksShown(tasks);
-        }
-        fetchWrapper(() => getSubTasksForTask(task.id));
-    }, [])
 
     // Form State
     let editableProps = getEditablePropsFromItemType(itemType); // some props like id & itemType can't be edited
@@ -40,16 +32,43 @@ function Task({ task }) {
     const [formState, handleInputChange, handleFormReset] = useFormState({ ...initialFormState });
     const [formOpen, setFormOpen] = useState(false);
 
+    useEffect(() => {
+        const getSubTasksForTask = async (taskId) => {
+            const res = await fetch(`http://localhost:${port}/subtasks?task_id=${taskId}`);
+            const tasks = await res.json();
+            setSubTasksShown(tasks);
+        }
+        fetchWrapper(() => getSubTasksForTask(task.id));
+    }, [task.id])
+
+
     // Event Handlers
     const handleOpen = () => setFormOpen(true);
     const handleClose = () => setFormOpen(false);
     const handleDeleteClick = () => { fetchWrapper(deleteItem(itemType, task.id)) };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+
+        const newTask = {
+            id: task.id,
+            ...formState
+        }
+
+        axios
+            .patch(`http://localhost:${port}/tasks/${task.id}`,
+                newTask
+                , {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            )
+            .then((res) => getItems('task'))
+            .catch((error) => console.log('error', error.message))
+
         setFormOpen(false);
         handleFormReset();
-        fetchWrapper(editItem(itemType, task.id, formState));
     }
 
     // Form Inputs
