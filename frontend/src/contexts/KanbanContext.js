@@ -30,24 +30,24 @@ export function KanbanProvider(props) {
         updateState(itemType, items);
     }
 
-    const getTasksForBoardAndStatus = async (boardId, statusId) => {
-        const res = await fetch(`http://localhost:${port}/tasks?board_id=${boardId}&status_id=${statusId}`);
-        const tasks = await res.json();
-        return tasks;
-    }
+    // const getTasksForBoardAndStatus = async (boardId, statusId) => {
+    //     const res = await fetch(`http://localhost:${port}/tasks?board_id=${boardId}&status_id=${statusId}`);
+    //     const tasks = await res.json();
+    //     return tasks;
+    // }
 
-    const getSubtasksForTask = async (taskId) => {
-        const res = await fetch(`http://localhost:${port}/subtasks?task_id=${taskId}`);
-        const subtasks = await res.json();
-        return subtasks;
-    }
+    // const getSubtasksForTask = async (taskId) => {
+    //     const res = await fetch(`http://localhost:${port}/subtasks?task_id=${taskId}`);
+    //     const subtasks = await res.json();
+    //     return subtasks;
+    // }
 
-    const getItemById = async (itemType, id) => {
-        const tableName = getTableNameFromItemType(itemType);
-        const res = await fetch(`http://localhost:${port}/${tableName}/${id}`);
-        const item = await res.json();
-        return item;
-    }
+    // const getItemById = async (itemType, id) => {
+    //     const tableName = getTableNameFromItemType(itemType);
+    //     const res = await fetch(`http://localhost:${port}/${tableName}/${id}`);
+    //     const item = await res.json();
+    //     return item;
+    // }
 
     // ADD
     const addItem = async (itemType, newItemData) => {
@@ -103,9 +103,6 @@ export function KanbanProvider(props) {
             tasks,
             subtasks,
             getItems,
-            getItemById,
-            getTasksForBoardAndStatus,
-            getSubtasksForTask,
             addItem,
             editItem,
             deleteItem

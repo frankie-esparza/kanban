@@ -13,8 +13,8 @@ export const getEditablePropsFromItemType = (itemType) => {
     switch (itemType) {
         case 'status': return ['text'];
         case 'board': return ['text'];
-        case 'task': return ['text', 'status', 'parentId'];
-        case 'subtask': return ['text', 'status', 'parentId'];
+        case 'task': return ['text', 'status_id', 'board_id'];
+        case 'subtask': return ['text', 'status_id', 'task_id'];
         default: return null;
     }
 }
@@ -22,8 +22,10 @@ export const getEditablePropsFromItemType = (itemType) => {
 export const getOptionsFromPropAndItemType = (kanban, prop, itemType) => {
     switch (prop) {
         case 'text': return null;
-        case 'status': return kanban.statuses;
-        default: return kanban[getParentKeyFromItemType(itemType)];
+        case 'status_id': return kanban.statuses;
+        case 'board_id': return kanban.boards;
+        case 'task_id': return kanban.tasks;
+        default: return null;
     }
 }
 
@@ -43,5 +45,5 @@ function getDefaultValue(kanban, prop, itemType) {
 
 export const getSubtasks = (item, kanban) => {
     if (!item) return null;
-    return kanban.subtasks.filter(subtask => subtask.parentId === item.id);
+    return kanban.subtasks.filter(subtask => subtask.id === item.id);
 }

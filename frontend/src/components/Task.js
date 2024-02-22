@@ -25,7 +25,7 @@ function Task({ task }) {
     const [subtasksShown, setSubTasksShown] = useState([]);
 
     useEffect(() => {
-        const getSubTasksForTask = async (taskId, statusId) => {
+        const getSubTasksForTask = async (taskId) => {
             const res = await fetch(`http://localhost:${port}/subtasks?task_id=${taskId}`);
             const tasks = await res.json();
             setSubTasksShown(tasks);
@@ -49,7 +49,7 @@ function Task({ task }) {
         e.preventDefault();
         setFormOpen(false);
         handleFormReset();
-        fetchWrapper(editItem(itemType, task.id, e.target.value));
+        fetchWrapper(editItem(itemType, task.id, formState));
     }
 
     // Form Inputs
