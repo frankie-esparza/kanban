@@ -6,7 +6,7 @@ import Task from './Task.js';
 
 function StatusColumn({ board, status }) {
     const port = 5000;
-    console.log('BOARD AND STATUS', board.text, status.text)
+    const { tasks } = useContext(KanbanContext);
     const [tasksShown, setTasksShown] = useState([]);
 
     // NOTE:
@@ -22,7 +22,7 @@ function StatusColumn({ board, status }) {
         }
 
         fetchWrapper(() => getTasksForBoardAndStatus(board.id, status.id));
-    }, [])
+    }, [board.id, status.id, tasks])
 
     const stylesTask = { padding: 1 };
 

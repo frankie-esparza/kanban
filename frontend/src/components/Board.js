@@ -14,6 +14,8 @@ function Board({ board, darkMode, setDarkMode }) {
     useEffect(() => {
         fetchWrapper(() => getItems('status'));
         fetchWrapper(() => getItems('board'));
+        fetchWrapper(() => getItems('task'));
+        fetchWrapper(() => getItems('subtask'));
     }, []);
 
     // Styles
