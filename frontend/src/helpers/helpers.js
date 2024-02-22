@@ -40,7 +40,7 @@ export const getParentItemType = (itemType) => {
 // ----------------------------------------------
 // the key is used to look up the items
 // in the kanban object of KanbanContext
-export const getKeyFromItemType = (itemType) => {
+export const getTableNameFromItemType = (itemType) => {
     if (itemType === "status") return itemType + 'es';
     else return itemType + 's';
 }

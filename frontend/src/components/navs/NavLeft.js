@@ -1,15 +1,20 @@
-import React, { useContext, memo } from 'react';
+import React, { useContext, useEffect, memo } from 'react';
 import { KanbanContext } from '../../contexts/KanbanContext';
 import { useLocation } from "react-router-dom";
 import { convertToKebabCase, convertFromKebabCase } from '../../helpers/helpers.js';
 import { v4 as uuidv4 } from 'uuid';
-import Form from '../forms/Form.js';
 import LabeledSwitch from './LabeledSwitch.js';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import { fetchWrapper } from '../../helpers/fetchHelpers.js';
+import { port } from '../KanbanApp.js';
 
-function NavLeft({ boards, darkMode, setDarkMode }) {
+function NavLeft({ darkMode, setDarkMode }) {
+    // Context
+    const { boards, setBoards } = useContext(KanbanContext);
+
+    // Get Current Board
     const location = useLocation().pathname.split('/')[1];
     const currentBoard = convertFromKebabCase(location);
 
@@ -60,7 +65,7 @@ function NavLeft({ boards, darkMode, setDarkMode }) {
 
                 {/*  ADD BOARD BUTTON */}
                 <Box sx={stylesAddBoardButton}>
-                    <Form formType='ADD' itemType='board' />
+                    {/* <Form formType='ADD' itemType='board' /> */}
                 </Box>
 
                 {/*  DARK MODE SWITCH */}
