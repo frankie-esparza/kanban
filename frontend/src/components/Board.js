@@ -1,33 +1,20 @@
-import { useContext, useState, useEffect, memo } from 'react';
+import { useContext, useEffect, memo } from 'react';
 import NavTop from './navs/NavTop.js';
 import NavLeft from './navs/NavLeft.js';
-import Form from './forms/Form.js';
-import { v4 as uuidv4 } from 'uuid';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { fetchWrapper } from '../helpers/fetchHelpers.js';
-import { port } from './KanbanApp.js';
 import { KanbanContext } from '../contexts/KanbanContext.js';
+import StatusColumn from './StatusColumn.js';
 
 function Board({ board, darkMode, setDarkMode }) {
     // Context
-    const { statuses, setStatuses, boards, tasks, setTasks } = useContext(KanbanContext);
+    const { statuses, getItems } = useContext(KanbanContext);
 
-    // Get Statuses
-    const getStatuses = async () => {
-        const res = await fetch(`http://localhost:${port}/statuses`);
-        const data = await res.json();
-        setStatuses(data);
-    };
-    useEffect(() => { fetchWrapper(getStatuses) }, [])
-
-    // Get Tasks
-    const getTasks = async () => {
-        const res = await fetch(`http://localhost:${port}/tasks?board_id=${board.id}`);
-        const data = await res.json();
-        setTasks(data);
-    };
-    useEffect(() => { fetchWrapper(getTasks) }, [])
+    useEffect(() => {
+        fetchWrapper(() => getItems('status'));
+        fetchWrapper(() => getItems('board'));
+    }, []);
 
     // Styles
     const stylesLeft = { display: 'flex', flexDirection: 'row', width: '100vw', height: '100vh', justifyContent: 'baseline' };
@@ -36,9 +23,7 @@ function Board({ board, darkMode, setDarkMode }) {
     const stylesNavTop = { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 2, bgcolor: 'background.secondary' };
     const stylesBoardsArea = { display: 'flex', flexDirection: 'row', padding: 4 };
     const stylesBoard = { width: 300, minWidth: 300 };
-    const stylesTask = { padding: 1 };
     const stylesAddStatusButton = { marginTop: 2 };
-
 
     return (
         board &&
@@ -48,7 +33,6 @@ function Board({ board, darkMode, setDarkMode }) {
                     className='left'
                     sx={stylesNavLeft} >
                     <NavLeft
-                        boards={boards}
                         darkMode={darkMode}
                         setDarkMode={setDarkMode}
                     />
@@ -59,17 +43,12 @@ function Board({ board, darkMode, setDarkMode }) {
                     </Box>
                     <Box sx={stylesBoardsArea}>
                         {statuses.map(status =>
-                            <Box key={uuidv4()} className='top' sx={stylesBoard}>
-                                <h2>{status.text}</h2>
-                                {tasks.map(task =>
-                                    (status.id === task.status_id) ?
-                                        <Box key={uuidv4()} sx={stylesTask}>
-                                            <Form formType='EDIT' itemType='task' item={task} />
-                                        </Box> : null)}
+                            <Box key={status.id} className='top' sx={stylesBoard}>
+                                <StatusColumn board={board} status={status} />
                             </Box>
                         )}
                         <Box sx={stylesAddStatusButton} >
-                            <Form formType='ADD' itemType='status' />
+                            {/* <AddDialog itemType='status' /> */}
                         </Box>
                     </Box>
                 </Box>
@@ -77,7 +56,5 @@ function Board({ board, darkMode, setDarkMode }) {
         </Paper >
     );
 }
-
-
 
 export default memo(Board);

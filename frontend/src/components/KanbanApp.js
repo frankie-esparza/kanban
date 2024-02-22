@@ -8,19 +8,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { getDesignTokens } from '../helpers/themeHelpers.js';
 import { fetchWrapper } from '../helpers/fetchHelpers.js';
 
-export const port = 5000;
-
 function KanbanApp() {
     // Context
-    const { boards, setBoards } = useContext(KanbanContext);
+    const { boards, getItems } = useContext(KanbanContext);
 
-    // Get Boards
-    const getBoards = async () => {
-        const res = await fetch(`http://localhost:${port}/boards`);
-        const data = await res.json();
-        setBoards(data);
-    };
-    useEffect(() => { fetchWrapper(getBoards) }, [])
+    // Get Boards after 1st Render
+    useEffect(() => { fetchWrapper(() => getItems('board')) }, []);
 
     // Theme
     let localStorageDarkMode = JSON.parse(window.localStorage.getItem('darkMode'));
@@ -34,7 +27,7 @@ function KanbanApp() {
                 <Routes>
                     {boards.map(board =>
                         <Route
-                            key={uuidv4()}
+                            key={board.id}
                             path={`/${convertToKebabCase(board.text)}`}
                             element={
                                 <Board
