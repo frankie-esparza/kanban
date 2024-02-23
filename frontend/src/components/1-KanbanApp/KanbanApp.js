@@ -9,9 +9,9 @@ import Board from '../2-Board/Board.js';
 
 function KanbanApp() {
     console.log('app rendered')
-    const { boards, getItems } = useContext(KanbanContext);
+    const { boards, getAllItems } = useContext(KanbanContext);
     const { theme } = useContext(ThemeContext);
-    useEffect(() => { getItems('board') }, []);
+    useEffect(() => { getAllItems() }, []);
 
     const boardRoutes = (
         boards.map(board =>
