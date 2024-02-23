@@ -5,36 +5,28 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Tooltip from '@mui/material/Tooltip';
 import { v4 as uuidv4 } from 'uuid';
 import Box from '@mui/material/Box';
 
 import { KanbanContext } from '../../contexts/KanbanContext.js';
-import { capitalize } from '../../helpers/helpers.js';
 import { getFormTitle, getEditablePropsFromItemType } from '../../helpers/formHelpers.js';
 import Input from '../0-subcomponents/Input.js';
-import Subtask from '../6-Subtask/Subtask.js';
 
-function EditDialog(
+function AddDialog(
     {
         formState,
         formOpen,
         handleClose,
-        handleDeleteClick,
         handleInputChange,
         handleSubmit,
-        item,
         itemType,
-        subtasks = null,
     }) {
 
     const { getAllItems } = useContext(KanbanContext);
     useEffect(() => { getAllItems() }, []);
 
     const editableProps = getEditablePropsFromItemType(itemType); // some props like id & itemType can't be edited
-    const formTitle = getFormTitle("EDIT", itemType, item);
+    const formTitle = getFormTitle("ADD", itemType);
 
     const formFields = (
         <DialogContent>
@@ -54,16 +46,9 @@ function EditDialog(
         </DialogContent>
     );
 
-    const deleteButton = (
-        <Tooltip title={`Delete ${capitalize(itemType)}`}>
-            <IconButton className="delete-button" color="primary" onClick={handleDeleteClick}><DeleteIcon /></IconButton>
-        </Tooltip>
-    );
-
     const formHeader = (
         <ButtonGroup variant="outlined">
             <DialogTitle>{formTitle}</DialogTitle>
-            {deleteButton}
         </ButtonGroup>
     );
 
@@ -74,21 +59,7 @@ function EditDialog(
         </DialogActions>
     );
 
-    let subtasksList = null;
-    if (subtasks) {
-        subtasksList = (
-            <Box sx={{ padding: 4 }}>
-                {subtasks.length > 0 && <h4>Subtasks</h4>}
-                {subtasks.map(subtask =>
-                    <Box key={subtask.id} sx={{ padding: 1 }}>
-                        <Subtask subtask={subtask} />
-                    </Box>)}
-            </Box>
-
-        );
-    }
-
-    const editFormSection = (
+    const addFormSection = (
         <Box sx={{ padding: 2 }}>
             {formHeader}
             {formFields}
@@ -102,10 +73,9 @@ function EditDialog(
             onClose={handleClose}
             PaperProps={{ component: 'form', onSubmit: handleSubmit }}
         >
-            {editFormSection}
-            {subtasksList}
+            {addFormSection}
         </Dialog >
     )
 }
 
-export default memo(EditDialog);
+export default memo(AddDialog);

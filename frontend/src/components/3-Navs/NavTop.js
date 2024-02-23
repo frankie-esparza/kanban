@@ -1,13 +1,14 @@
 import { memo } from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+
+import AddButton from '../0-subcomponents/AddButton';
 
 function NavTop({ board }) {
     const stylesAddTaskButton = { marginLeft: 4, marginTop: 4 };
 
     const addTaskButton = (
         <Box sx={stylesAddTaskButton}>
-            <Button>Add Task</Button>
+            <AddButton itemType='task' />
         </Box>
     );
 

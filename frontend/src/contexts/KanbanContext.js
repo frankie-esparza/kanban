@@ -43,7 +43,17 @@ export function KanbanProvider(props) {
         const tableName = getTableNameFromItemType(itemType);
         axios
             .patch(`http://localhost:${port}/${tableName}/${id}`, newItemData)
-            .then((res) => getItems('task'))
+            .then((res) => getAllItems())
+            .catch((err) => console.error(err.message))
+    }
+
+    // ADD
+    const addItem = async (itemType, newItemData) => {
+        console.log('post request made')
+        const tableName = getTableNameFromItemType(itemType);
+        axios
+            .post(`http://localhost:${port}/${tableName}`, newItemData)
+            .then((res) => getAllItems())
             .catch((err) => console.error(err.message))
     }
 
@@ -52,7 +62,7 @@ export function KanbanProvider(props) {
         const tableName = getTableNameFromItemType(itemType);
         axios
             .delete(`http://localhost:${port}/${tableName}/${id}`)
-            .then((res) => getItems('task'))
+            .then((res) => getAllItems())
             .catch((err) => console.error(err.message))
     }
 
@@ -66,6 +76,7 @@ export function KanbanProvider(props) {
                 getItems,
                 getAllItems,
                 editItem,
+                addItem,
                 deleteItem
             }}
         >
