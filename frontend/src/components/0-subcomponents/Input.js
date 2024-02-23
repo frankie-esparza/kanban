@@ -44,7 +44,6 @@ function Input({ prop, itemType, formState, handleInputChange }) {
                 value={formState[prop]}
                 onChange={handleInputChange}
                 label={label}
-
                 required
             >
                 {options.map(option => <MenuItem key={uuidv4()} value={option.id}>{option.text}</MenuItem>)}
@@ -53,11 +52,9 @@ function Input({ prop, itemType, formState, handleInputChange }) {
     }
 
     return (
-        <Box>
-
+        <>
             {content}
-
-        </Box>
+        </>
     )
 }
 
