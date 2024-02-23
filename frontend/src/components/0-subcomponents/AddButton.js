@@ -28,10 +28,22 @@ function AddButton({ itemType }) {
         handleFormReset();
     }
 
+    const styles = {
+        color: 'text.primary',
+        bgcolor: 'background.secondary',
+        padding: 4,
+        textTransform: 'capitalize',
+        width: 250,
+        alignContent: 'center',
+        minHeight: itemType === 'task' ? 100 : 50,
+    };
+
     return (
         <>
             <Button
+                variant="contained"
                 onClick={handleOpen}
+                styles={styles}
             >
                 {`Add ${itemType}`}
             </Button>
