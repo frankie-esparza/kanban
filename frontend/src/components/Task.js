@@ -1,57 +1,33 @@
 import React, { useContext, useEffect, useState, memo } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Tooltip from '@mui/material/Tooltip';
-import Input from './forms/Input.js';
 import useFormState from '../hooks/useFormState.js';
 import { KanbanContext } from '../contexts/KanbanContext.js';
-import { v4 as uuidv4 } from 'uuid';
-import { capitalize } from '../helpers/helpers.js';
-import { getFormTitle, getEditablePropsFromItemType, getInitialFormState } from '../helpers/formHelpers.js';
-import Box from '@mui/material/Box';
-import { fetchWrapper } from '../helpers/fetchHelpers.js';
-import axios from "axios";
+import { getEditablePropsFromItemType, getInitialFormState } from '../helpers/formHelpers.js';
+import axios from 'axios';
+import TaskCard from './TaskCard.js';
+import TaskEditDialog from './TaskEditDialog.js';
 
 function Task({ task }) {
     const port = 5000;
     const itemType = 'task';
     const { statuses, boards, tasks, subtasks, editItem, deleteItem } = useContext(KanbanContext);
-    const [subtasksShown, setSubTasksShown] = useState([]);
+    const [subtasksOfTask, setSubtasksOfTask] = useState([]);
 
-    // Form State
-    let editableProps = getEditablePropsFromItemType(itemType); // some props like id & itemType can't be edited
-    const kanban = { statuses, boards, tasks, subtasks };
-    let initialFormState = getInitialFormState(editableProps, task, itemType, kanban);
-    const [formState, handleInputChange, handleFormReset] = useFormState({ ...initialFormState });
-    const [formOpen, setFormOpen] = useState(false);
-
-    // NOTE:
-    // We make the subtasks fetch call in the 'Task' componenent instead of in the Kanban Provider
-    // because we need access to the 'subtasksShown' slice of state. Unlike the other fetch calls,
-    // here we do not update the database with the subtask info after the fetch call we just store
-    // in locally in the 'Task' component
+    // Get Subtasks & store in Local State
     useEffect(() => {
-        const getSubTasksForTask = async (taskId) => {
-            const res = await fetch(`http://localhost:${port}/subtasks?task_id=${taskId}`);
-            const tasks = await res.json();
-            setSubTasksShown(tasks);
+        const getSubtasksOfTask = async (taskId) => {
+            axios
+                .get(`http://localhost:${port}/subtasks?task_id=${taskId}`)
+                .then((res) => setSubtasksOfTask(res.data))
+                .catch((err) => console.error(err.message))
         }
-
-        fetchWrapper(() => getSubTasksForTask(task.id));
+        getSubtasksOfTask(task.id);
     }, [task.id])
 
 
     // Event Handlers
     const handleOpen = () => setFormOpen(true);
     const handleClose = () => setFormOpen(false);
-    const handleDeleteClick = () => { fetchWrapper(deleteItem(itemType, task.id)) };
+    const handleDeleteClick = () => deleteItem(itemType, task.id);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -60,90 +36,33 @@ function Task({ task }) {
         handleFormReset();
     }
 
-    // Form Inputs
-    const inputContent = (
-        <ul>
-            {editableProps.map(prop =>
-                <li key={uuidv4()}>
-                    <Box sx={{ padding: 2 }}>
-                        <Input
-                            prop={prop}
-                            itemType={itemType}
-                            formState={formState}
-                            handleInputChange={handleInputChange}
-                        />
-                    </Box>
-                </li>)}
-        </ul>
-    );
-
-    let subtasksContent;
-    if (subtasksShown && subtasksShown.length > 0) {
-        subtasksContent = (
-            <>
-                <DialogContentText>Subtasks</DialogContentText>
-                {subtasksShown.map(subtask =>
-                    <Box key={uuidv4()} sx={{ padding: 1 }}>
-                        <p>{subtask.text}</p>
-                    </Box>)}
-            </>
-        );
-    }
-
-    // Delete Button
-    let deleteButtonContent = (
-        <Tooltip title={`Delete ${capitalize(itemType)}`}>
-            <IconButton className="delete-button" color="primary" onClick={handleDeleteClick}><DeleteIcon /></IconButton>
-        </Tooltip>
-    );
-
-    // styles
-    const buttonStyles = {
-        color: 'text.primary',
-        bgcolor: 'background.secondary',
-        padding: 2,
-        textTransform: 'capitalize',
-        width: 250,
-        alignContent: 'center',
-        minHeight: 100,
-    };
-
-    const formTitle = getFormTitle("EDIT", itemType, task);
+    // Form State
+    const kanban = { statuses, boards, tasks, subtasks };
+    const editableProps = getEditablePropsFromItemType(itemType); // some props like id can't be edited
+    let initialFormState = getInitialFormState(editableProps, task, itemType, kanban);
+    const [formState, handleInputChange, handleFormReset] = useFormState({ ...initialFormState });
+    const [formOpen, setFormOpen] = useState(false);
 
     return (
         <>
-            <ButtonGroup
-                variant="contained"
-                sx={buttonStyles}
-                onClick={handleOpen}>
-                <Box>
-                    <h4> {formTitle}</h4>
-                    {subtasksShown && subtasksShown.length > 0 && <p>{`${subtasksShown.length} subtasks`}</p>}
-                </Box>
-
-            </ButtonGroup >
+            <TaskCard
+                task={task}
+                numSubtasks={subtasksOfTask.length}
+                handleOpen={handleOpen}
+            />
             {formOpen &&
-                <Dialog
-                    open={formOpen}
-                    onClose={handleClose}
-                    PaperProps={{
-                        component: 'form',
-                        onSubmit: handleSubmit
-                    }}
-                >
-                    <ButtonGroup variant="outlined">
-                        <DialogTitle>{formTitle}</DialogTitle>
-                        {deleteButtonContent}
-                    </ButtonGroup>
-                    <DialogContent>
-                        {inputContent}
-                        {subtasks && subtasksContent}
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button type="submit">Submit</Button>
-                    </DialogActions>
-                </Dialog >
+                <>
+                    <TaskEditDialog
+                        formState={formState}
+                        formOpen={formOpen}
+                        handleClose={handleClose}
+                        handleDeleteClick={handleDeleteClick}
+                        handleInputChange={handleInputChange}
+                        handleSubmit={handleSubmit}
+                        subtasks={subtasksOfTask}
+                        task={task}
+                    />
+                </>
             }
         </>
     )

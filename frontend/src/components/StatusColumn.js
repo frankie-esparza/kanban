@@ -9,14 +9,7 @@ function StatusColumn({ board, status }) {
     const { tasks } = useContext(KanbanContext);
     const [tasksShown, setTasksShown] = useState([]);
 
-    // NOTE:
-    // useEffect is supposed to return a function, so it's first argument must be a regular callback
-    // because of this, we can't have the first arg of useEffect be an async function, because then it would
-    // return a Promise. To work around this we define an async function for the fetch request inside the
-    // useEffect and then call it
-    //
-    // we make the fetch call here instead of in Kanban Provider because we need access to the tasksShown
-    // slice of state (see similar note in the 'Task' component for more details )
+
     useEffect(() => {
         const getTasksForBoardAndStatus = async (boardId, statusId) => {
             const res = await fetch(`http://localhost:${port}/tasks?board_id=${boardId}&status_id=${statusId}`);

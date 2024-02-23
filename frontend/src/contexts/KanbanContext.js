@@ -14,8 +14,7 @@ export function KanbanProvider(props) {
     // -----------
     // HELPERS
     // ------------
-    // Updates state after making a fetch call
-    const updateState = (itemType, data) => {
+    const updateContext = (itemType, data) => {
         switch (itemType) {
             case 'status': setStatuses(data); break;
             case 'board': setBoards(data); break;
@@ -30,7 +29,7 @@ export function KanbanProvider(props) {
         const tableName = getTableNameFromItemType(itemType);
         const res = await fetch(`http://localhost:${port}/${tableName}`);
         const items = await res.json();
-        updateState(itemType, items);
+        updateContext(itemType, items);
     }
 
     // EDIT
@@ -39,24 +38,30 @@ export function KanbanProvider(props) {
         axios
             .patch(`http://localhost:${port}/${tableName}/${id}`, newItemData)
             .then((res) => getItems('task'))
-            .catch((error) => console.log('error', error.message))
+            .catch((err) => console.error(err.message))
     }
 
-    // ADD
-
-
     // DELETE
+    const deleteItem = async (itemType, id) => {
+        const tableName = getTableNameFromItemType(itemType);
+        axios
+            .delete(`http://localhost:${port}/${tableName}/${id}`)
+            .then((res) => getItems('task'))
+            .catch((err) => console.error(err.message))
+    }
 
     return (
-        <KanbanContext.Provider value={{
-            statuses,
-            boards,
-            tasks,
-            subtasks,
-            getItems,
-            updateState,
-            editItem
-        }}>
+        <KanbanContext.Provider
+            value={{
+                statuses,
+                boards,
+                tasks,
+                subtasks,
+                getItems,
+                editItem,
+                deleteItem
+            }}
+        >
             {props.children}
         </KanbanContext.Provider>
     )
