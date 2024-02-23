@@ -22,7 +22,7 @@ import axios from "axios";
 function Task({ task }) {
     const port = 5000;
     const itemType = 'task';
-    const { statuses, boards, tasks, subtasks, getItems, deleteItem } = useContext(KanbanContext);
+    const { statuses, boards, tasks, subtasks, editItem, deleteItem } = useContext(KanbanContext);
     const [subtasksShown, setSubTasksShown] = useState([]);
 
     // Form State
@@ -32,12 +32,18 @@ function Task({ task }) {
     const [formState, handleInputChange, handleFormReset] = useFormState({ ...initialFormState });
     const [formOpen, setFormOpen] = useState(false);
 
+    // NOTE:
+    // We make the subtasks fetch call in the 'Task' componenent instead of in the Kanban Provider
+    // because we need access to the 'subtasksShown' slice of state. Unlike the other fetch calls,
+    // here we do not update the database with the subtask info after the fetch call we just store
+    // in locally in the 'Task' component
     useEffect(() => {
         const getSubTasksForTask = async (taskId) => {
             const res = await fetch(`http://localhost:${port}/subtasks?task_id=${taskId}`);
             const tasks = await res.json();
             setSubTasksShown(tasks);
         }
+
         fetchWrapper(() => getSubTasksForTask(task.id));
     }, [task.id])
 
@@ -49,24 +55,7 @@ function Task({ task }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const newTask = {
-            id: task.id,
-            ...formState
-        }
-
-        axios
-            .patch(`http://localhost:${port}/tasks/${task.id}`,
-                newTask
-                , {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-            )
-            .then((res) => getItems('task'))
-            .catch((error) => console.log('error', error.message))
-
+        editItem(itemType, task.id, formState);
         setFormOpen(false);
         handleFormReset();
     }
@@ -129,7 +118,7 @@ function Task({ task }) {
                 onClick={handleOpen}>
                 <Box>
                     <h4> {formTitle}</h4>
-                    {subtasks && subtasks.length > 0 && <p>{`${subtasks.length} subtasks`}</p>}
+                    {subtasksShown && subtasksShown.length > 0 && <p>{`${subtasksShown.length} subtasks`}</p>}
                 </Box>
 
             </ButtonGroup >
