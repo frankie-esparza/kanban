@@ -1,11 +1,10 @@
 import React, { memo } from 'react';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Box from '@mui/material/Box';
-import { getFormTitle } from '../helpers/formHelpers.js';
+import { getFormTitle } from '../../helpers/formHelpers.js';
 
-function TaskCard({ task, numSubtasks, handleOpen }) {
-    const itemType = 'task';
-    const formTitle = getFormTitle("EDIT", itemType, task);
+function ItemCard({ item, itemType, handleOpen, numSubtasks = null }) {
+    const formTitle = getFormTitle("EDIT", itemType, item);
 
     const styles = {
         color: 'text.primary',
@@ -14,7 +13,7 @@ function TaskCard({ task, numSubtasks, handleOpen }) {
         textTransform: 'capitalize',
         width: 250,
         alignContent: 'center',
-        minHeight: 100,
+        minHeight: itemType === 'task' ? 100 : 50,
     };
 
     return (
@@ -30,4 +29,4 @@ function TaskCard({ task, numSubtasks, handleOpen }) {
     )
 }
 
-export default memo(TaskCard);
+export default memo(ItemCard);

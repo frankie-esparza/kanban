@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, memo } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { KanbanContext } from '../contexts/KanbanContext.js'
-import { ThemeContext } from '../contexts/ThemeContext.js'
-import { convertToKebabCase } from '../helpers/helpers.js';
-import Board from './Board.js';
+
+import { KanbanContext } from '../../contexts/KanbanContext.js';
+import { ThemeContext } from '../../contexts/ThemeContext.js'
+import { convertToKebabCase } from '../../helpers/helpers.js';
+import Board from '../2-Board/Board.js';
 
 function KanbanApp() {
     const { boards, getItems } = useContext(KanbanContext);

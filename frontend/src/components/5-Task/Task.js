@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState, memo } from 'react';
-import useFormState from '../hooks/useFormState.js';
-import { KanbanContext } from '../contexts/KanbanContext.js';
-import { getEditablePropsFromItemType, getInitialFormState } from '../helpers/formHelpers.js';
+import useFormState from '../../hooks/useFormState.js';
+import { KanbanContext } from '../../contexts/KanbanContext.js';
+import { getEditablePropsFromItemType, getInitialFormState } from '../../helpers/formHelpers.js';
 import axios from 'axios';
-import TaskCard from './TaskCard.js';
-import TaskEditDialog from './TaskEditDialog.js';
+import ItemCard from '../0-subcomponents/ItemCard.js';
+import EditDialog from '../0-subcomponents/EditDialog.js';
 
 function Task({ task }) {
     const port = 5000;
@@ -45,14 +45,14 @@ function Task({ task }) {
 
     return (
         <>
-            <TaskCard
-                task={task}
+            <ItemCard
+                item={task}
                 numSubtasks={subtasksOfTask.length}
                 handleOpen={handleOpen}
             />
             {formOpen &&
                 <>
-                    <TaskEditDialog
+                    <EditDialog
                         formState={formState}
                         formOpen={formOpen}
                         handleClose={handleClose}
@@ -60,7 +60,8 @@ function Task({ task }) {
                         handleInputChange={handleInputChange}
                         handleSubmit={handleSubmit}
                         subtasks={subtasksOfTask}
-                        task={task}
+                        item={task}
+                        itemType={itemType}
                     />
                 </>
             }

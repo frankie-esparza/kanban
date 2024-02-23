@@ -1,8 +1,9 @@
 import { useContext, useState, useEffect, memo } from 'react';
 import Box from '@mui/material/Box';
-import { KanbanContext } from '../contexts/KanbanContext.js';
-import Task from './Task.js';
 import axios from 'axios';
+
+import { KanbanContext } from '../../contexts/KanbanContext.js';
+import Task from '../5-Task/Task.js';
 
 function StatusColumn({ board, status }) {
     const port = 5000;

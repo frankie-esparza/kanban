@@ -1,10 +1,11 @@
 import { useContext, useEffect, memo } from 'react';
-import NavTop from './navs/NavTop.js';
-import NavLeft from './navs/NavLeft.js';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import { KanbanContext } from '../contexts/KanbanContext.js';
-import StatusColumn from './StatusColumn.js';
+
+import { KanbanContext } from '../../contexts/KanbanContext.js';
+import StatusColumn from '../4-StatusColumn/StatusColumn.js';
+import NavTop from '../3-Navs/NavTop.js';
+import NavLeft from '../3-Navs/NavLeft.js';
 
 function Board({ board }) {
     const { statuses, getAllItems } = useContext(KanbanContext);

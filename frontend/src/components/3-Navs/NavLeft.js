@@ -1,13 +1,15 @@
 import React, { useContext, memo } from 'react';
-import { KanbanContext } from '../../contexts/KanbanContext';
 import { useLocation } from "react-router-dom";
-import { convertToKebabCase, convertFromKebabCase } from '../../helpers/helpers.js';
-import LabeledSwitch from './LabeledSwitch.js';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { ThemeContext } from '../../contexts/ThemeContext.js';
 import Button from '@mui/material/Button';
+
+import { KanbanContext } from '../../contexts/KanbanContext.js';
+import { ThemeContext } from '../../contexts/ThemeContext.js';
+import { convertToKebabCase, convertFromKebabCase } from '../../helpers/helpers.js';
+import LabeledSwitch from '../0-subcomponents/LabeledSwitch.js';
+
 
 function NavLeft() {
     const { boards } = useContext(KanbanContext);
