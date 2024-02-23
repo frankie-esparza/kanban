@@ -19,21 +19,22 @@ function Item({ item, itemType }) {
     const [formState, handleInputChange, handleFormReset] = useFormState({ ...initialFormState });
     const [formOpen, setFormOpen] = useState(false);
 
-    useEffect(() => { getAllItems() }, []);
-
-    // If item is a Task, Get Subtasks & store in Local State
-    const getSubtasksOfTask = async (id) => {
-        axios
-            .get(`http://localhost:${port}/subtasks?task_id=${id}`)
-            .then((res) => setSubtasksOfTask(res.data))
-            .catch((err) => console.error(err.message))
-    }
+    // useEffect(() => { getAllItems() }, []);
 
     useEffect(() => {
+        // If item is a Task, Get Subtasks & store in Local State
+        const getSubtasksOfTask = async (id) => {
+            axios
+                .get(`http://localhost:${port}/subtasks?task_id=${id}`)
+                .then((res) => setSubtasksOfTask(res.data))
+                .catch((err) => console.error(err.message))
+        }
+
         if (itemType === 'task') {
             getSubtasksOfTask(item.id);
         }
-    }, [subtasks])
+    }, [item.id, subtasks, itemType])
+
 
 
     // Event Handlers

@@ -3,12 +3,12 @@ import { useLocation } from "react-router-dom";
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import Button from '@mui/material/Button';
 
 import { KanbanContext } from '../../contexts/KanbanContext.js';
 import { ThemeContext } from '../../contexts/ThemeContext.js';
 import { convertToKebabCase, convertFromKebabCase } from '../../helpers/helpers.js';
 import LabeledSwitch from '../0-subcomponents/LabeledSwitch.js';
+import AddButton from '../0-subcomponents/AddButton.js';
 
 
 function NavLeft() {
@@ -81,7 +81,7 @@ function NavLeft() {
 
     const addBoardButton = (
         <Box sx={stylesAddBoardButton}>
-            <Button>Add Board</Button>
+            <AddButton itemType='board' />
         </Box>
     );
 

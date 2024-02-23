@@ -9,6 +9,7 @@ import { KanbanContext } from '../../contexts/KanbanContext.js'
 import { v4 as uuidv4 } from 'uuid';
 
 function Input({ prop, itemType, formState, handleInputChange }) {
+    console.log('formState', formState);
     const { statuses, boards, tasks, subtasks } = useContext(KanbanContext);
 
     const getLabel = () => {
