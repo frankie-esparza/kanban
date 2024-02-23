@@ -3,21 +3,13 @@ import NavTop from './navs/NavTop.js';
 import NavLeft from './navs/NavLeft.js';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import { fetchWrapper } from '../helpers/fetchHelpers.js';
 import { KanbanContext } from '../contexts/KanbanContext.js';
-import { ThemeContext } from '../contexts/ThemeContext.js'
 import StatusColumn from './StatusColumn.js';
 
 function Board({ board }) {
-    // Context
-    const { statuses, getItems } = useContext(KanbanContext);
+    const { statuses, getAllItems } = useContext(KanbanContext);
 
-    useEffect(() => {
-        fetchWrapper(() => getItems('status'));
-        fetchWrapper(() => getItems('board'));
-        fetchWrapper(() => getItems('task'));
-        fetchWrapper(() => getItems('subtask'));
-    }, []);
+    useEffect(() => { getAllItems() }, [getAllItems]);
 
     // Styles
     const stylesLeft = { display: 'flex', flexDirection: 'row', width: '100vw', height: '100vh', justifyContent: 'baseline' };

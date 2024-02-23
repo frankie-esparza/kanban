@@ -1,23 +1,23 @@
 import { useContext, useState, useEffect, memo } from 'react';
 import Box from '@mui/material/Box';
-import { fetchWrapper } from '../helpers/fetchHelpers.js';
 import { KanbanContext } from '../contexts/KanbanContext.js';
 import Task from './Task.js';
+import axios from 'axios';
 
 function StatusColumn({ board, status }) {
     const port = 5000;
     const { tasks } = useContext(KanbanContext);
     const [tasksShown, setTasksShown] = useState([]);
 
-
     useEffect(() => {
         const getTasksForBoardAndStatus = async (boardId, statusId) => {
-            const res = await fetch(`http://localhost:${port}/tasks?board_id=${boardId}&status_id=${statusId}`);
-            const tasks = await res.json();
-            setTasksShown(tasks);
+            axios
+                .get(`http://localhost:${port}/tasks?board_id=${boardId}&status_id=${statusId}`)
+                .then((res) => setTasksShown(res.data))
+                .catch((err) => console.error(err.message))
         }
 
-        fetchWrapper(() => getTasksForBoardAndStatus(board.id, status.id));
+        getTasksForBoardAndStatus(board.id, status.id);
     }, [board.id, status.id, tasks])
 
     const stylesTask = { padding: 1 };

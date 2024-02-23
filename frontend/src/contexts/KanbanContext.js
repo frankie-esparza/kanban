@@ -1,6 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { getTableNameFromItemType } from '../helpers/helpers'
-import axios from "axios";
+import axios from 'axios';
 
 export const KanbanContext = createContext();
 
@@ -27,9 +27,15 @@ export function KanbanProvider(props) {
     // GET
     const getItems = async (itemType) => {
         const tableName = getTableNameFromItemType(itemType);
-        const res = await fetch(`http://localhost:${port}/${tableName}`);
-        const items = await res.json();
-        updateContext(itemType, items);
+        axios
+            .get(`http://localhost:${port}/${tableName}`)
+            .then((res) => updateContext(itemType, res.data))
+            .catch((err) => console.error(err.message))
+    }
+
+    const getAllItems = async (itemType) => {
+        const allItems = ['status', 'board', 'task', 'subtask'];
+        allItems.forEach(item => getItems(item));
     }
 
     // EDIT
@@ -58,6 +64,7 @@ export function KanbanProvider(props) {
                 tasks,
                 subtasks,
                 getItems,
+                getAllItems,
                 editItem,
                 deleteItem
             }}
