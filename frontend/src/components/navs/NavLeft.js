@@ -9,10 +9,12 @@ import Link from '@mui/material/Link';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { fetchWrapper } from '../../helpers/fetchHelpers.js';
 import { port } from '../KanbanApp.js';
+import { ThemeContext } from '../../contexts/ThemeContext.js';
 
-function NavLeft({ darkMode, setDarkMode }) {
+function NavLeft() {
     // Context
     const { boards, setBoards } = useContext(KanbanContext);
+    const { theme, darkMode, setDarkMode } = useContext(ThemeContext);
 
     // Get Current Board
     const location = useLocation().pathname.split('/')[1];

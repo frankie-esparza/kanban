@@ -5,9 +5,10 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import { fetchWrapper } from '../helpers/fetchHelpers.js';
 import { KanbanContext } from '../contexts/KanbanContext.js';
+import { ThemeContext } from '../contexts/ThemeContext.js'
 import StatusColumn from './StatusColumn.js';
 
-function Board({ board, darkMode, setDarkMode }) {
+function Board({ board }) {
     // Context
     const { statuses, getItems } = useContext(KanbanContext);
 
@@ -34,10 +35,7 @@ function Board({ board, darkMode, setDarkMode }) {
                 <Box
                     className='left'
                     sx={stylesNavLeft} >
-                    <NavLeft
-                        darkMode={darkMode}
-                        setDarkMode={setDarkMode}
-                    />
+                    <NavLeft />
                 </Box>
                 <Box className='center' sx={stylesCenter}>
                     <Box sx={stylesNavTop} >
