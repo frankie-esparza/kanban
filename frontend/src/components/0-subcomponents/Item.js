@@ -8,7 +8,6 @@ import EditDialog from '../0-subcomponents/EditDialog.js';
 
 function Item({ item, itemType }) {
     const port = 5000;
-    const id = item.id;
     const { statuses, boards, tasks, subtasks, editItem, deleteItem } = useContext(KanbanContext);
     const [subtasksOfTask, setSubtasksOfTask] = useState([]);
 
@@ -21,19 +20,19 @@ function Item({ item, itemType }) {
                     .then((res) => setSubtasksOfTask(res.data))
                     .catch((err) => console.error(err.message))
             }
-            getSubtasksOfTask(id);
+            getSubtasksOfTask(item.id);
         }
-    }, [id, itemType])
+    }, [])
 
 
     // Event Handlers
     const handleOpen = () => setFormOpen(true);
     const handleClose = () => setFormOpen(false);
-    const handleDeleteClick = () => deleteItem(itemType, id);
+    const handleDeleteClick = () => deleteItem(itemType, item.id);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        editItem(itemType, id, formState);
+        editItem(itemType, item.id, formState);
         setFormOpen(false);
         handleFormReset();
     }

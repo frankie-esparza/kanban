@@ -9,8 +9,7 @@ import NavLeft from '../3-Navs/NavLeft.js';
 
 function Board({ board }) {
     const { statuses, getAllItems } = useContext(KanbanContext);
-
-    useEffect(() => { getAllItems() }, [getAllItems]);
+    useEffect(() => { getAllItems() }, []);
 
     // Styles
     const stylesLeft = { display: 'flex', flexDirection: 'row', width: '100vw', height: '100vh', justifyContent: 'baseline' };
