@@ -1,5 +1,5 @@
 
-import { capitalize, getParentKeyFromItemType } from './helpers';
+import { capitalize } from './helpers';
 
 export const getFormTitle = (formType, itemType, item) => {
     switch (formType) {
