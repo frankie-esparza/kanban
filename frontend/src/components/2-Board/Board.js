@@ -14,7 +14,7 @@ function Board({ board }) {
     // Styles
     const stylesLeft = { display: 'flex', flexDirection: 'row', width: '100vw', height: '100vh', justifyContent: 'baseline' };
     const stylesNavLeft = { width: '10%', minWidth: 230, height: '100%', bgcolor: 'background.secondary' };
-    const stylesCenter = { width: '90%', bgcolor: 'background.primary' };
+    const stylesCenter = { width: '90%', bgcolor: 'background.primary', minWidth: 200 };
     const stylesNavTop = { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 2, bgcolor: 'background.secondary' };
     const stylesBoardsArea = { display: 'flex', flexDirection: 'row', padding: 4 };
     const stylesBoard = { width: 300, minWidth: 300 };

@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import AddButton from '../0-subcomponents/AddButton';
 
 function NavTop({ board }) {
-    const stylesAddTaskButton = { marginLeft: 4, marginTop: 4 };
+    const stylesAddTaskButton = { marginRight: 4 };
 
     const addTaskButton = (
         <Box sx={stylesAddTaskButton}>
