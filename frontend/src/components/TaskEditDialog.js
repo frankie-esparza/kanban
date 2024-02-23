@@ -78,17 +78,11 @@ function TaskEditDialog(
         </Box>
     );
 
-
     return (
         <Dialog
             open={formOpen}
             onClose={handleClose}
-            PaperProps={
-                {
-                    component: 'form',
-                    onSubmit: handleSubmit
-                }
-            }
+            PaperProps={{ component: 'form', onSubmit: handleSubmit }}
         >
             {formHeader}
             {formFields}
