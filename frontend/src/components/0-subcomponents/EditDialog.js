@@ -28,7 +28,6 @@ function EditDialog(
         itemType,
         subtasks = null,
     }) {
-    // const itemType = 'task';
     const editableProps = getEditablePropsFromItemType(itemType); // some props like id & itemType can't be edited
     const formTitle = getFormTitle("EDIT", itemType, item);
 
@@ -48,7 +47,6 @@ function EditDialog(
                     </li>)}
             </ul>
         </DialogContent>
-
     );
 
     const deleteButton = (
@@ -77,8 +75,7 @@ function EditDialog(
             <Box sx={{ padding: 4 }}>
                 {subtasks.length > 0 && <h4>Subtasks</h4>}
                 {subtasks.map(subtask =>
-                    <Box key={subtask.id} sx={{ padding: 5 }}>
-                        {/* <p>{subtask.text}</p> */}
+                    <Box key={subtask.id} sx={{ padding: 1 }}>
                         <Subtask subtask={subtask} />
                     </Box>)}
             </Box>
@@ -86,15 +83,21 @@ function EditDialog(
         );
     }
 
+    const editFormSection = (
+        <Box sx={{ padding: 2 }}>
+            {formHeader}
+            {formFields}
+            {formFooter}
+        </Box >
+    );
+
     return (
         <Dialog
             open={formOpen}
             onClose={handleClose}
             PaperProps={{ component: 'form', onSubmit: handleSubmit }}
         >
-            {formHeader}
-            {formFields}
-            {formFooter}
+            {editFormSection}
             {subtasksList}
         </Dialog >
     )
