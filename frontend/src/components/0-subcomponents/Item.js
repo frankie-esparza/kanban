@@ -19,8 +19,6 @@ function Item({ item, itemType }) {
     const [formState, handleInputChange, handleFormReset] = useFormState({ ...initialFormState });
     const [formOpen, setFormOpen] = useState(false);
 
-    // useEffect(() => { getAllItems() }, []);
-
     useEffect(() => {
         // If item is a Task, Get Subtasks & store in Local State
         const getSubtasksOfTask = async (id) => {
@@ -34,8 +32,6 @@ function Item({ item, itemType }) {
             getSubtasksOfTask(item.id);
         }
     }, [item.id, subtasks, itemType])
-
-
 
     // Event Handlers
     const handleOpen = () => setFormOpen(true);
@@ -53,6 +49,7 @@ function Item({ item, itemType }) {
         <>
             <ItemCard
                 item={item}
+                itemType={itemType}
                 numSubtasks={subtasksOfTask.length}
                 handleOpen={handleOpen}
             />

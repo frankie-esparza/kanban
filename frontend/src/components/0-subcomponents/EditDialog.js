@@ -5,17 +5,15 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import ButtonGroup from '@mui/material/ButtonGroup';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Tooltip from '@mui/material/Tooltip';
 import { v4 as uuidv4 } from 'uuid';
 import Box from '@mui/material/Box';
 
 import { KanbanContext } from '../../contexts/KanbanContext.js';
-import { capitalize } from '../../helpers/helpers.js';
 import { getFormTitle, getEditablePropsFromItemType } from '../../helpers/formHelpers.js';
 import Input from '../0-subcomponents/Input.js';
 import Subtask from '../6-Subtask/Subtask.js';
+import DeleteButton from './DeleteButton.js';
+import AddButton from './AddButton.js';
 
 function EditDialog(
     {
@@ -55,14 +53,19 @@ function EditDialog(
     );
 
     const deleteButton = (
-        <Tooltip title={`Delete ${capitalize(itemType)}`}>
-            <IconButton className="delete-button" color="primary" onClick={handleDeleteClick}><DeleteIcon /></IconButton>
-        </Tooltip>
+        <DeleteButton item={item} itemType={itemType} />
+    );
+
+    const addSubtaskButton = (
+        <Box sx={{ padding: 2 }}>
+            <AddButton itemType='subtask' />
+        </Box>
     );
 
     const formHeader = (
         <ButtonGroup variant="outlined">
             <DialogTitle>{formTitle}</DialogTitle>
+            {itemType === 'task' && addSubtaskButton}
             {deleteButton}
         </ButtonGroup>
     );
