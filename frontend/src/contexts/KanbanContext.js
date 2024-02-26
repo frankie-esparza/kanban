@@ -2,15 +2,15 @@ import React, { createContext, useState } from 'react';
 import { getTableNameFromItemType } from '../helpers/helpers'
 import axios from 'axios';
 
-export const KanbanContext = createContext();
-
-// Create instance of axios
 const port = 5000;
 
+// Create instance of axios
 export const axiosKanban = axios.create({
     baseURL: `http://localhost:${port}/`,
     timeout: 1000
 });
+
+export const KanbanContext = createContext();
 
 export function KanbanProvider(props) {
     const [statuses, setStatuses] = useState([]);
