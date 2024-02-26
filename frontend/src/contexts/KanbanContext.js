@@ -4,8 +4,15 @@ import axios from 'axios';
 
 export const KanbanContext = createContext();
 
+// Create instance of axios
+const port = 5000;
+
+export const axiosKanban = axios.create({
+    baseURL: `http://localhost:${port}/`,
+    timeout: 1000
+});
+
 export function KanbanProvider(props) {
-    const port = 5000;
     const [statuses, setStatuses] = useState([]);
     const [boards, setBoards] = useState([]);
     const [tasks, setTasks] = useState([]);
@@ -25,13 +32,13 @@ export function KanbanProvider(props) {
     // GET
     const getItems = async (itemType) => {
         const tableName = getTableNameFromItemType(itemType);
-        axios
-            .get(`http://localhost:${port}/${tableName}`)
+        axiosKanban
+            .get(`${tableName}`)
             .then((res) => updateContext(itemType, res.data))
             .catch((err) => console.error(err.message))
     }
 
-    const getAllItems = async (itemType) => {
+    const getAllItems = async () => {
         const allItems = ['status', 'board', 'task', 'subtask'];
         allItems.forEach(item => getItems(item));
     }
@@ -39,8 +46,8 @@ export function KanbanProvider(props) {
     // EDIT
     const editItem = async (itemType, id, newItemData) => {
         const tableName = getTableNameFromItemType(itemType);
-        axios
-            .patch(`http://localhost:${port}/${tableName}/${id}`, newItemData)
+        axiosKanban
+            .patch(`${tableName}/${id}`, newItemData)
             .then((res) => getAllItems())
             .catch((err) => console.error(err.message))
     }
@@ -48,8 +55,8 @@ export function KanbanProvider(props) {
     // ADD
     const addItem = async (itemType, newItemData) => {
         const tableName = getTableNameFromItemType(itemType);
-        axios
-            .post(`http://localhost:${port}/${tableName}`, newItemData)
+        axiosKanban
+            .post(`${tableName}`, newItemData)
             .then((res) => getAllItems())
             .catch((err) => console.error(err.message))
     }
@@ -57,8 +64,8 @@ export function KanbanProvider(props) {
     // DELETE
     const deleteItem = async (itemType, id) => {
         const tableName = getTableNameFromItemType(itemType);
-        axios
-            .delete(`http://localhost:${port}/${tableName}/${id}`)
+        axiosKanban
+            .delete(`${tableName}/${id}`)
             .then((res) => getAllItems())
             .catch((err) => console.error(err.message))
     }

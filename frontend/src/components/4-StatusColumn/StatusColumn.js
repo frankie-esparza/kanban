@@ -1,20 +1,18 @@
 import { useContext, useState, useEffect, memo } from 'react';
 import Box from '@mui/material/Box';
-import axios from 'axios';
-
+import { axiosKanban } from '../../contexts/KanbanContext.js';
 import { KanbanContext } from '../../contexts/KanbanContext.js';
 import Task from '../5-Task/Task.js';
 
 function StatusColumn({ board, status }) {
-    const port = 5000;
     const { tasks } = useContext(KanbanContext);
     const [tasksShown, setTasksShown] = useState([]);
 
     // Get Tasks for Each Status Column
     useEffect(() => {
         const getTasksForBoardAndStatus = async (boardId, statusId) => {
-            axios
-                .get(`http://localhost:${port}/tasks?board_id=${boardId}&status_id=${statusId}`)
+            axiosKanban
+                .get(`tasks?board_id=${boardId}&status_id=${statusId}`)
                 .then((res) => setTasksShown(res.data))
                 .catch((err) => console.error(err.message))
         }

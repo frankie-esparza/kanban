@@ -2,12 +2,11 @@ import React, { useContext, useEffect, useState, memo } from 'react';
 import useFormState from '../../hooks/useFormState.js';
 import { KanbanContext } from '../../contexts/KanbanContext.js';
 import { getEditablePropsFromItemType, getInitialFormState } from '../../helpers/formHelpers.js';
-import axios from 'axios';
+import { axiosKanban } from '../../contexts/KanbanContext.js';
 import ItemCard from '../0-subcomponents/ItemCard.js';
 import EditDialog from '../0-subcomponents/EditDialog.js';
 
 function Item({ item, itemType }) {
-    const port = 5000;
     const { statuses, boards, tasks, subtasks, editItem, deleteItem } = useContext(KanbanContext);
     const [subtasksOfTask, setSubtasksOfTask] = useState([]);
 
@@ -22,8 +21,8 @@ function Item({ item, itemType }) {
     // Get Subtasks of Task (only if item is a Task - i.e. not a Subtask)
     useEffect(() => {
         const getSubtasksOfTask = async (id) => {
-            axios
-                .get(`http://localhost:${port}/subtasks?task_id=${id}`)
+            axiosKanban
+                .get(`subtasks?task_id=${id}`)
                 .then((res) => setSubtasksOfTask(res.data))
                 .catch((err) => console.error(err.message))
         }
