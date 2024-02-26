@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, memo } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { KanbanContext } from '../../contexts/KanbanContext.js';
 import { ThemeContext } from '../../contexts/ThemeContext.js'
 import { convertToKebabCase } from '../../helpers/helpers.js';
 import Board from '../2-Board/Board.js';
+import Home from '../2-Home/Home.js';
 
 function KanbanApp() {
     const { boards, getAllItems } = useContext(KanbanContext);
@@ -28,21 +28,21 @@ function KanbanApp() {
             />)
     );
 
-    const defaultRoute = (
+    const home = (
         <Route
             path={`/`}
-            element={<Board board={boards[0]} />}
+            element={<Home />}
         />
     );
 
     return (
         <ThemeProvider theme={theme}>
-            <Router>
+            <BrowserRouter>
                 <Routes>
                     {boardRoutes}
-                    {defaultRoute}
+                    {home}
                 </Routes>
-            </Router>
+            </BrowserRouter>
         </ThemeProvider>
     );
 }

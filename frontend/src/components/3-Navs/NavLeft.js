@@ -16,7 +16,7 @@ function NavLeft() {
     const { darkMode, setDarkMode } = useContext(ThemeContext);
 
     const location = useLocation().pathname.split('/')[1];
-    const currentBoard = convertFromKebabCase(location) || boards[0].text;
+    const currentBoard = convertFromKebabCase(location) || '/';
 
     const toggleTheme = () => {
         setDarkMode(!darkMode);
@@ -69,13 +69,23 @@ function NavLeft() {
 
     const navTitle = (
         <Box sx={stylesKanbanLogo}>
-            <h1>kanban</h1>
+            <Link
+                href={'/'}
+                underline="none"
+                sx={{ color: 'text.primary' }}
+            >
+                <h1>kanban</h1>
+            </Link>
         </Box>
     );
 
     const listOfBoards = (
         <Box sx={stylesBoardsList}>
-            {boards.map(board => <BoardLink key={board.id} board={board} />)}
+            {
+                boards
+                    .map(board => <BoardLink key={board.id} board={board} />)
+                    .sort((a, b) => (a.text > b.text) ? -1 : 1)
+            }
         </Box>
     );
 

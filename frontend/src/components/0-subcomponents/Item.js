@@ -1,12 +1,15 @@
 import React, { useContext, useEffect, useState, memo } from 'react';
 import useFormState from '../../hooks/useFormState.js';
 import { KanbanContext } from '../../contexts/KanbanContext.js';
+import { convertToKebabCase } from '../../helpers/helpers.js';
 import { getEditablePropsFromItemType, getInitialFormState } from '../../helpers/formHelpers.js';
 import { axiosKanban } from '../../contexts/KanbanContext.js';
 import ItemCard from '../0-subcomponents/ItemCard.js';
 import EditDialog from '../0-subcomponents/EditDialog.js';
+import { useNavigate } from 'react-router-dom';
 
 function Item({ item, itemType }) {
+    const navigate = useNavigate();
     const { statuses, boards, tasks, subtasks, editItem, deleteItem } = useContext(KanbanContext);
     const [subtasksOfTask, setSubtasksOfTask] = useState([]);
 
@@ -44,6 +47,12 @@ function Item({ item, itemType }) {
         editItem(itemType, item.id, formState);
         setFormOpen(false);
         handleFormReset();
+
+        // If the name of the board changed, navigate to the board
+        if (itemType === 'board') {
+            let newRoute = convertToKebabCase(formState.text);
+            navigate(`/${newRoute}`)
+        }
     }
 
     return (
