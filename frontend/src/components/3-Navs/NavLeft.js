@@ -83,8 +83,8 @@ function NavLeft() {
         <Box sx={stylesBoardsList}>
             {
                 boards
+                    .sort((a, b) => (a.text > b.text) ? 1 : -1)
                     .map(board => <BoardLink key={board.id} board={board} />)
-                    .sort((a, b) => (a.text > b.text) ? -1 : 1)
             }
         </Box>
     );
