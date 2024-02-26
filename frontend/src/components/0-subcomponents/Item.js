@@ -19,6 +19,7 @@ function Item({ item, itemType }) {
     const [formState, handleInputChange, handleFormReset] = useFormState({ ...initialFormState });
     const [formOpen, setFormOpen] = useState(false);
 
+    // Get Subtasks of Task (only if item is a Task - i.e. not a Subtask)
     useEffect(() => {
         const getSubtasksOfTask = async (id) => {
             axios

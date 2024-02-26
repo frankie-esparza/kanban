@@ -1,4 +1,3 @@
-
 import { capitalize } from './helpers';
 
 export const getFormTitle = (formType, itemType, item) => {

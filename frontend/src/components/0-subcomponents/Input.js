@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState, memo } from 'react';
+import React, { useContext, memo } from 'react';
 import { capitalize, getParentItemType } from '../../helpers/helpers.js';
 import { getOptionsFromPropAndItemType } from '../../helpers/formHelpers.js';
-import Box from '@mui/material/Box';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';

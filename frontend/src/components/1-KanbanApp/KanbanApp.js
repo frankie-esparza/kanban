@@ -11,8 +11,10 @@ function KanbanApp() {
     const { boards, getAllItems } = useContext(KanbanContext);
     const { theme } = useContext(ThemeContext);
 
+    // Get All Items (Statuses, Boards, Tasks, & Subtasks) when Kanban App first loads
+    // TODO - figure out why linter says getAllItems should be in dependency array
+    // but when added, it causes an infite loop
     useEffect(() => {
-        console.log('GET ALL ITEMS called from KanbanApp')
         getAllItems();
     }, []
     );

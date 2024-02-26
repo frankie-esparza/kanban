@@ -13,7 +13,6 @@ function AddButton({ itemType }) {
     const kanban = { statuses, boards, tasks, subtasks };
     const editableProps = getEditablePropsFromItemType(itemType); // some props like id can't be edited
     let initialFormState = getInitialFormState(editableProps, itemType, kanban);
-    console.log('Add Form State', initialFormState);
     const [formState, handleInputChange, handleFormReset] = useFormState({ ...initialFormState });
     const [formOpen, setFormOpen] = useState(false);
 
