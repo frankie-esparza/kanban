@@ -8,10 +8,14 @@ import { convertToKebabCase } from '../../helpers/helpers.js';
 import Board from '../2-Board/Board.js';
 
 function KanbanApp() {
-    console.log('app rendered')
     const { boards, getAllItems } = useContext(KanbanContext);
     const { theme } = useContext(ThemeContext);
-    useEffect(() => { getAllItems() }, []);
+
+    useEffect(() => {
+        console.log('GET ALL ITEMS called from KanbanApp')
+        getAllItems();
+    }, []
+    );
 
     const boardRoutes = (
         boards.map(board =>

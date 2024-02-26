@@ -7,6 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 function ItemCard({ item, itemType, handleOpen, numSubtasks = null }) {
     const formTitle = getFormTitle("EDIT", itemType, item);
 
+    // styles
     const styles = {
         fontSize: 20,
         color: 'text.primary',
@@ -17,15 +18,12 @@ function ItemCard({ item, itemType, handleOpen, numSubtasks = null }) {
         alignContent: 'center',
         minHeight: itemType === 'task' ? 100 : 50,
     };
-
     const boardStyles = {
         fontSize: 30,
         alignContent: 'center',
         textTransform: 'capitalize',
     };
-
     const boardTitleAndDeleteButtonStyles = { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' };
-
     const editButtonStyles = { paddingInline: 2 };
 
     const editButton = (

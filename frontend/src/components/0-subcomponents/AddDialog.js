@@ -22,8 +22,12 @@ function AddDialog(
         itemType,
     }) {
 
-    const { getAllItems } = useContext(KanbanContext);
-    useEffect(() => { getAllItems() }, []);
+    // const { getAllItems } = useContext(KanbanContext);
+    // useEffect(() => {
+    //     console.log('getAllItems called from Add Dialog');
+    //     getAllItems()
+    // }, []
+    // );
 
     const editableProps = getEditablePropsFromItemType(itemType); // some props like id & itemType can't be edited
     const formTitle = getFormTitle("ADD", itemType);
