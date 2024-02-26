@@ -7,20 +7,20 @@ import ItemCard from '../0-subcomponents/ItemCard.js';
 import EditDialog from '../0-subcomponents/EditDialog.js';
 
 function Item({ item, itemType }) {
-    console.log('Item rendered')
     const port = 5000;
-    const { statuses, boards, tasks, subtasks, editItem, deleteItem, getAllItems } = useContext(KanbanContext);
+    const { statuses, boards, tasks, subtasks, editItem, deleteItem } = useContext(KanbanContext);
     const [subtasksOfTask, setSubtasksOfTask] = useState([]);
 
     // Form State
     const kanban = { statuses, boards, tasks, subtasks };
     const editableProps = getEditablePropsFromItemType(itemType); // some props like id can't be edited
-    let initialFormState = getInitialFormState(editableProps, item, itemType, kanban);
+    let initialFormState = getInitialFormState(editableProps, itemType, kanban, item);
+
     const [formState, handleInputChange, handleFormReset] = useFormState({ ...initialFormState });
     const [formOpen, setFormOpen] = useState(false);
 
+    // Get Subtasks of Task (only if item is a Task - i.e. not a Subtask)
     useEffect(() => {
-        // If item is a Task, Get Subtasks & store in Local State
         const getSubtasksOfTask = async (id) => {
             axios
                 .get(`http://localhost:${port}/subtasks?task_id=${id}`)
@@ -28,10 +28,12 @@ function Item({ item, itemType }) {
                 .catch((err) => console.error(err.message))
         }
 
+        // If item is a Task, Get Subtasks & store in Local State
         if (itemType === 'task') {
+            console.log(item.text, '--- getting subtasks');
             getSubtasksOfTask(item.id);
         }
-    }, [item.id, subtasks, itemType])
+    }, [subtasks, item.id, item.text, itemType])
 
     // Event Handlers
     const handleOpen = () => setFormOpen(true);

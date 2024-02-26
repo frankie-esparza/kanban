@@ -11,9 +11,7 @@ export function KanbanProvider(props) {
     const [tasks, setTasks] = useState([]);
     const [subtasks, setSubtasks] = useState([]);
 
-    // -----------
-    // HELPERS
-    // ------------
+    // Helper Function that updates the slice of state corresponding to 'itemType'
     const updateContext = (itemType, data) => {
         switch (itemType) {
             case 'status': setStatuses(data); break;
@@ -49,7 +47,6 @@ export function KanbanProvider(props) {
 
     // ADD
     const addItem = async (itemType, newItemData) => {
-        console.log('post request made')
         const tableName = getTableNameFromItemType(itemType);
         axios
             .post(`http://localhost:${port}/${tableName}`, newItemData)

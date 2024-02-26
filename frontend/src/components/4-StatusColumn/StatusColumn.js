@@ -10,6 +10,7 @@ function StatusColumn({ board, status }) {
     const { tasks } = useContext(KanbanContext);
     const [tasksShown, setTasksShown] = useState([]);
 
+    // Get Tasks for Each Status Column
     useEffect(() => {
         const getTasksForBoardAndStatus = async (boardId, statusId) => {
             axios
@@ -19,7 +20,7 @@ function StatusColumn({ board, status }) {
         }
 
         getTasksForBoardAndStatus(board.id, status.id);
-    }, [board.id, status.id, tasks])
+    }, [tasks, board.id, status.id])
 
     const stylesTask = { padding: 1 };
 

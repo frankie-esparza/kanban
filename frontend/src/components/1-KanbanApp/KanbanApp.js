@@ -8,10 +8,16 @@ import { convertToKebabCase } from '../../helpers/helpers.js';
 import Board from '../2-Board/Board.js';
 
 function KanbanApp() {
-    console.log('app rendered')
     const { boards, getAllItems } = useContext(KanbanContext);
     const { theme } = useContext(ThemeContext);
-    useEffect(() => { getAllItems() }, []);
+
+    // Get All Items (Statuses, Boards, Tasks, & Subtasks) when Kanban App first loads
+    // TODO - figure out why linter says getAllItems should be in dependency array
+    // but when added, it causes an infite loop
+    useEffect(() => {
+        getAllItems();
+    }, []
+    );
 
     const boardRoutes = (
         boards.map(board =>

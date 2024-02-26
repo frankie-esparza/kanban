@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, memo } from 'react';
+import React, { memo } from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -8,7 +8,6 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import { v4 as uuidv4 } from 'uuid';
 import Box from '@mui/material/Box';
 
-import { KanbanContext } from '../../contexts/KanbanContext.js';
 import { getFormTitle, getEditablePropsFromItemType } from '../../helpers/formHelpers.js';
 import Input from '../0-subcomponents/Input.js';
 import Subtask from '../6-Subtask/Subtask.js';
@@ -20,16 +19,12 @@ function EditDialog(
         formState,
         formOpen,
         handleClose,
-        handleDeleteClick,
         handleInputChange,
         handleSubmit,
         item,
         itemType,
         subtasks = null,
     }) {
-
-    const { getAllItems } = useContext(KanbanContext);
-    useEffect(() => { getAllItems() }, []);
 
     const editableProps = getEditablePropsFromItemType(itemType); // some props like id & itemType can't be edited
     const formTitle = getFormTitle("EDIT", itemType, item);

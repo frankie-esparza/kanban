@@ -1,4 +1,4 @@
-import { useContext, useEffect, memo } from 'react';
+import { useContext, memo } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 
@@ -8,8 +8,7 @@ import NavTop from '../3-Navs/NavTop.js';
 import NavLeft from '../3-Navs/NavLeft.js';
 
 function Board({ board }) {
-    const { statuses, getAllItems } = useContext(KanbanContext);
-    useEffect(() => { getAllItems() }, []);
+    const { statuses } = useContext(KanbanContext);
 
     // Styles
     const stylesLeft = { display: 'flex', flexDirection: 'row', width: '100vw', height: '100vh', justifyContent: 'baseline' };

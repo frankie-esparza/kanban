@@ -1,4 +1,3 @@
-
 import { capitalize } from './helpers';
 
 export const getFormTitle = (formType, itemType, item) => {
@@ -19,7 +18,7 @@ export const getEditablePropsFromItemType = (itemType) => {
     }
 }
 
-export const getOptionsFromPropAndItemType = (kanban, prop, itemType) => {
+export const getOptionsFromPropAndItemType = (kanban, prop) => {
     switch (prop) {
         case 'text': return null;
         case 'status_id': return kanban.statuses;
@@ -29,7 +28,7 @@ export const getOptionsFromPropAndItemType = (kanban, prop, itemType) => {
     }
 }
 
-export const getInitialFormState = (editableProps, item, itemType, kanban) => {
+export const getInitialFormState = (editableProps, itemType, kanban, item = null) => {
     let initialFormState = {};
     editableProps.forEach(prop =>
         initialFormState[prop] = (item ? item[prop] : getDefaultValue(kanban, prop, itemType))

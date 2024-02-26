@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState, memo } from 'react';
+import React, { useContext, memo } from 'react';
 import { capitalize, getParentItemType } from '../../helpers/helpers.js';
 import { getOptionsFromPropAndItemType } from '../../helpers/formHelpers.js';
-import Box from '@mui/material/Box';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,7 +8,6 @@ import { KanbanContext } from '../../contexts/KanbanContext.js'
 import { v4 as uuidv4 } from 'uuid';
 
 function Input({ prop, itemType, formState, handleInputChange }) {
-    console.log('formState', formState);
     const { statuses, boards, tasks, subtasks } = useContext(KanbanContext);
 
     const getLabel = () => {

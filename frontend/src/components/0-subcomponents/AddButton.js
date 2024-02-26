@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, memo } from 'react';
+import React, { useContext, useState, memo } from 'react';
 import useFormState from '../../hooks/useFormState.js';
 import { KanbanContext } from '../../contexts/KanbanContext.js';
 import Button from '@mui/material/Button';
@@ -22,7 +22,6 @@ function AddButton({ itemType }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('formState', formState);
         addItem(itemType, formState);
         setFormOpen(false);
         handleFormReset();
