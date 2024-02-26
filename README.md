@@ -1,42 +1,48 @@
 # Kanban App
+Welcome to the Kanban task management app! 👋🏽 🌊
+- This app uses the kanban method to visually organize tasks.
+- Tasks are added to 'Boards' which contain 3 status columns, 'Todo', 'Doing', and 'Done'.
+- A task may contain subtasks.
+- Learn more about the kanban method here - https://en.wikipedia.org/wiki/Kanban_(development)
 
 ## Setup
 
-### Download PostgresQL
-https://www.postgresql.org/download/
+### Set up PostgresQL
+1. Download PostgresQL here - https://www.postgresql.org/download/
+2. Start PostgresQL on your computer
+3. Open PostgresQL
+4. Open 'Preferences...'
+5. Uncheck 'Ask for permission when apps open without passsword'
 
 ### Helpful commands for PostgresQL & psql:
-- psql - starts up psql (the command line interface to PostgresQL)
-- \q exit
-- \h gives list of SQL commands
-- \? gives list of psql commands
+- ```psql``` - starts up psql (the command line interface to PostgresQL)
+- ```\q``` exit
+- ```\h``` gives list of SQL commands
+- ```\?``` gives list of psql commands
 - don't forget semicolons at the end of any SQL commands
 
 ### Set up the backend:
-1. Start PostgresQL on your computer
-2. Adjust settings so password not needed to connec to databases
-3. cd into 'backend/server'
-4. npm install
-5. cd into 'backend/database'
-6. psql                    //  starts PostgresQL in your terminal
-7. CREATE DATABASE kanban; //  create a database called kanban
-8. \c kanban               //  connect to kanban database
-9. \i 0_reset.sql          //  this file runs 4 sql files that create tables in the database
-                           //   & seed the starter data for statuses, boards, tasks & subtasks
-10. Note: to reset the database at anytime just re-run \i 0_reset.sql
+1. ```cd backend```
+2. ```npm install```
+3. ```cd backend/database```
+4. ```psql``` to start PostgresQL in your terminal
+5. ```CREATE DATABASE kanban;``` tocreate a database called kanban
+6. ```\c kanban``` to connect to kanban database
+7. ```\i 0_reset.sql```  to reset the database -
+this comamnd runs 4 sql files that create tables in the database
+and seed the starter data for statuses, boards, tasks & subtasks
+8. Note: to reset the database at anytime just re-run ```\i 0_reset.sql```
 
 ### Set up the frontend:
-1. cd into 'frontend'
-2. npm install
+1. ```cd frontend```
+2. ```npm install```
 
 ## Running the App
 
 ### Start the frontend:
-1. open a terminal
-2. cd into 'frontend'
-3. run npm start
+1. ```cd frontend```
+2. ```npm start```
 
 ### Start the backend:
-1. open another terminal
-2. cd into 'backend/server'
-3. run nodemon index.js
+1. ```cd backend/server```
+2. ```nodemon index.js```
