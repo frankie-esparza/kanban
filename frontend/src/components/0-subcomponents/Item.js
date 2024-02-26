@@ -40,7 +40,6 @@ function Item({ item, itemType }) {
     // Event Handlers
     const handleOpen = () => setFormOpen(true);
     const handleClose = () => setFormOpen(false);
-    const handleDeleteClick = () => deleteItem(itemType, item.id);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -69,7 +68,6 @@ function Item({ item, itemType }) {
                         formState={formState}
                         formOpen={formOpen}
                         handleClose={handleClose}
-                        handleDeleteClick={handleDeleteClick}
                         handleInputChange={handleInputChange}
                         handleSubmit={handleSubmit}
                         subtasks={subtasksOfTask}

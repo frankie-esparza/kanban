@@ -9,7 +9,7 @@ function NavTop({ board }) {
 
     return (
         <Box sx={navTopStyles}>
-            <Item item={board} itemType={'board'} />
+            <Item item={board} itemType='board' />
             <Box sx={addButtonStyles}>
                 <AddButton itemType='task' />
             </Box>
