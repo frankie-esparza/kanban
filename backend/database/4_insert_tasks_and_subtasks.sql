@@ -19,7 +19,7 @@ WHERE text = 'Todo';
 SELECT id
 INTO board_id_1
 FROM boards
-WHERE text = 'Platform Launch';
+WHERE text = 'Marketing Strategy';
 
 -- add tasks to that board
 INSERT INTO tasks (text, status_id, board_id)
