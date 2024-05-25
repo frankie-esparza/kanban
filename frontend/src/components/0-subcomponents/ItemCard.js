@@ -13,7 +13,6 @@ function ItemCard({ item, itemType, handleOpen, numSubtasks = null }) {
         color: 'text.primary',
         bgcolor: 'background.secondary',
         padding: 2,
-        textTransform: 'capitalize',
         width: 250,
         alignContent: 'center',
         minHeight: itemType === 'task' ? 100 : 50,
