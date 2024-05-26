@@ -3,7 +3,7 @@ import { capitalize } from './helpers';
 export const getFormTitle = (formType, itemType, item) => {
     switch (formType) {
         case 'ADD': return `${capitalize(formType)} ${capitalize(itemType)}`;
-        case 'EDIT': return `${capitalize(item.text)}`;
+        case 'EDIT': return `${item.text}`;
         default: return null;
     }
 }
