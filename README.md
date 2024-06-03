@@ -1,10 +1,9 @@
 # Kanban Fullstack App
-Welcome to the Kanban task management app! 👋🏽 🌊
-- this app is built using the PERN stack (PostgresQL, Express, React & Node.js)
-- What's Kanban? Learn more about it [here](https://en.wikipedia.org/wiki/Kanban_(development))
+Welcome to the Kanban task management app! 
+- this app is built using the PERN stack (PostgresQL, Express, React & Node.js) & Material UI
+- What's Kanban? Learn more about it here - https://en.wikipedia.org/wiki/Kanban_(development)
 
 ## Overview
-
 Using the App:
 - The app contains **Boards** which each contain three **Status Columns** - Todo, Doing, and Done
 - each **Status Column** contains **Tasks**
@@ -41,7 +40,7 @@ Using the App:
 2. Start PostgresQL on your computer
 3. Open PostgresQL
 4. Open **Preferences...**
-5. Uncheck **Ask for permission when apps open without passsword'**
+5. Uncheck **Ask for permission when apps open without passsword**
 
 ### Helpful commands for PostgresQL & psql:
 - ```psql``` - starts up psql (the command line interface to PostgresQL)

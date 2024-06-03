@@ -9,20 +9,25 @@ function ItemCard({ item, itemType, handleOpen, numSubtasks = null }) {
 
     // styles
     const styles = {
-        fontSize: 20,
+        fontSize: 18,
         color: 'text.primary',
         bgcolor: 'background.secondary',
-        padding: 2,
+        paddingInline: 2,
         width: 250,
         alignContent: 'center',
         minHeight: itemType === 'task' ? 100 : 50,
     };
     const boardStyles = {
-        fontSize: 30,
+        fontSize: 25,
         alignContent: 'center',
         textTransform: 'capitalize',
     };
-    const boardTitleAndDeleteButtonStyles = { display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' };
+    const boardTitleAndDeleteButtonStyles = { 
+        display: 'flex', 
+        flexDirection: 'row', 
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    };
     const editButtonStyles = { paddingInline: 2 };
 
     const editButton = (
