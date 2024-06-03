@@ -1,6 +1,6 @@
 
-import { teal } from '@mui/material/colors';
-const goobsTeal = '#1a9c97'
+import { grey } from '@mui/material/colors';
+const accent = '#A3CEF3'
 const darkGrey = '#21212D';
 const medGrey = '#2C2C38';
 const lightGrey = '#CACAD4';
@@ -10,23 +10,26 @@ export const getDesignTokens = (mode) => ({
     palette: {
         mode,
         primary: {
-            ...teal,
+            main: accent,
+            secondary: lightGrey,
+            ...grey,
             ...(mode === 'dark' && {
                 default: white,
             }),
+            accent
         },
         ...(mode === 'dark' && {
             background: {
                 default: darkGrey,
                 secondary: medGrey,
-                active: goobsTeal,
+                active: accent,
             },
         }),
         ...(mode === 'light' && {
             background: {
                 default: white,
                 secondary: lightGrey,
-                active: goobsTeal,
+                active: accent,
             },
         }),
         text: {
@@ -39,6 +42,6 @@ export const getDesignTokens = (mode) => ({
                     primary: white,
                     secondary: lightGrey
                 }),
-        },
+        }
     },
 });

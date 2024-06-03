@@ -25,9 +25,9 @@ function NavLeft() {
 
     // styles
     const stylesNavLeft = { height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }
-    const stylesTitleSection = { marginTop: 2 };
+    const stylesTitleSection = { marginTop: .5};
     const stylesKanbanLogo = { paddingInline: 3 };
-    const stylesBoardsList = { marginTop: 8.77 };
+    const stylesBoardsList = { marginTop: 4.75 };
     const stylesBoardLink = { display: 'flex', flexDirection: 'row', alignItems: 'center', paddingInline: 2 };
     const stylesDashboardIcon = { paddingInline: 1 };
     const stylesAddBoardButton = { marginLeft: 4, marginTop: 4 };

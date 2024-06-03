@@ -1,6 +1,6 @@
 # Kanban Fullstack App
-Welcome to the Kanban task management app! 👋🏽 🌊
-- this app is built using the PERN stack (PostgresQL, Express, React & Node.js)
+Welcome to the Kanban task management app! 
+- this app is built using the PERN stack (PostgresQL, Express, React & Node.js) & Material UI
 - What's Kanban? Learn more about it here - https://en.wikipedia.org/wiki/Kanban_(development)
 
 ## Overview
@@ -31,11 +31,11 @@ Using the App:
 ## Setup
 
 ### Set up PostgresQL
-1. Download PostgresQL here - https://www.postgresql.org/download/
+1. Download PostgresQL
 2. Start PostgresQL on your computer
 3. Open PostgresQL
 4. Open **Preferences...**
-5. Uncheck **Ask for permission when apps open without passsword'**
+5. Uncheck **Ask for permission when apps open without passsword**
 
 ### Helpful commands for PostgresQL & psql:
 - ```psql``` - starts up psql (the command line interface to PostgresQL)
