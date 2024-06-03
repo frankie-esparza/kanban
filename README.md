@@ -8,15 +8,8 @@ Using the App:
 - The app contains **Boards** which each contain three **Status Columns** - Todo, Doing, and Done
 - each **Status Column** contains **Tasks**
 - each **Task** may contain **Subtasks**
-  
-<img width="1000" alt="home" src="https://github.com/fwesparza/kanban/assets/17794659/d826f46b-e543-4fa2-9d14-6a568f07d8b9">
-<img width="1000" alt="form" src="https://github.com/fwesparza/kanban/assets/17794659/31b6f472-1b2b-4186-8f68-d23baf5f6f76">
-<img width="1000" alt="darkMode" src="https://github.com/fwesparza/kanban/assets/17794659/d1d272ff-96f5-45ea-a056-bce77694c299">
-
-
 
 ## Notes on the Code:
-
 ### Database, Context & State Management
 - all data related to **Statuses**, **Boards**, **Tasks**, & **Subtasks** is stored in a PostgresQL database
 - the current dark/light mode setting is being stored in local storage
@@ -32,9 +25,7 @@ Using the App:
 - wherever possible, state is managed in higher-order components & needed props are passed to children (e.g. the **Item**
   component contains state that is relevant to the **ItemCard** & **EditDialog**)
 
-
 ## Setup
-
 ### Set up PostgresQL
 1. Download PostgresQL [here](https://www.postgresql.org/download/)
 2. Start PostgresQL on your computer
@@ -66,7 +57,6 @@ and seed the starter data for statuses, boards, tasks & subtasks
 2. ```npm install```
 
 ## Running the App
-
 ### Start the frontend:
 1. ```cd frontend```
 2. ```npm start```
@@ -74,12 +64,3 @@ and seed the starter data for statuses, boards, tasks & subtasks
 ### Start the backend:
 1. ```cd backend/server```
 2. ```nodemon index.js```
-
-
-## Future Improvements
-1. **Increase speed** - currently some components render more times than they need to
-2. **Add tests** - using mocha & chai
-3. **Add helpful error messages** to the user for invalid data or actions.
-4. **Authentication**
-5. **Clean up the CSS** & use Material UI styled components
-6. Change Subtask status from Todo, Doing, Done to checkboxes
