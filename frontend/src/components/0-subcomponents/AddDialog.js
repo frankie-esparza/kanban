@@ -42,15 +42,15 @@ function AddDialog(
     );
 
     const formHeader = (
-        <ButtonGroup variant="outlined">
+        <ButtonGroup>
             <DialogTitle>{formTitle}</DialogTitle>
         </ButtonGroup>
     );
 
     const formFooter = (
         <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit">Submit</Button>
+            <Button variant="contained" onClick={handleClose}>Cancel</Button>
+            <Button variant="contained" type="submit">Submit</Button>
         </DialogActions>
     );
 
