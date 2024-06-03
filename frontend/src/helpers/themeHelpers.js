@@ -11,7 +11,7 @@ export const getDesignTokens = (mode) => ({
         mode,
         primary: {
             main: accent,
-            secondary: lightGrey,
+            secondary: grey,
             ...grey,
             ...(mode === 'dark' && {
                 default: white,
@@ -36,11 +36,11 @@ export const getDesignTokens = (mode) => ({
             ...(mode === 'light'
                 ? {
                     primary: darkGrey,
-                    secondary: lightGrey
+                    secondary: darkGrey
                 }
                 : {
                     primary: white,
-                    secondary: lightGrey
+                    secondary: darkGrey
                 }),
         }
     },

@@ -67,15 +67,15 @@ function EditDialog(
 
     const formFooter = (
         <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit">Submit</Button>
+                <Button variant="contained" onClick={handleClose}>Cancel</Button>
+                <Button variant="contained" type="submit">Submit</Button>
         </DialogActions>
     );
 
     let subtasksList = null;
     if (subtasks) {
         subtasksList = (
-            <Box sx={{ padding: 4 }}>
+            <Box sx={{ padding: 2 }}>
                 {subtasks.length > 0 && <h4>Subtasks</h4>}
                 {subtasks.map(subtask =>
                     <Box key={subtask.id} sx={{ padding: 1 }}>
