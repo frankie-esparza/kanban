@@ -1,7 +1,7 @@
 # Kanban Fullstack App
 Welcome to the Kanban task management app! 
 - this app is built using the PERN stack (PostgresQL, Express, React & Node.js) & Material UI
-- What's Kanban? Learn more about it here - https://en.wikipedia.org/wiki/Kanban_(development)
+- What's Kanban? Learn more about it [here](https://en.wikipedia.org/wiki/Kanban_(development))
 
 ## Overview
 Using the App:
