@@ -4,11 +4,16 @@ Welcome to the Kanban task management app!
 - What's Kanban? Learn more about it here - https://en.wikipedia.org/wiki/Kanban_(development)
 
 ## Overview
-
 Using the App:
 - The app contains **Boards** which each contain three **Status Columns** - Todo, Doing, and Done
 - each **Status Column** contains **Tasks**
 - each **Task** may contain **Subtasks**
+  
+<img width="1000" alt="home" src="https://github.com/fwesparza/kanban/assets/17794659/d826f46b-e543-4fa2-9d14-6a568f07d8b9">
+<img width="1000" alt="form" src="https://github.com/fwesparza/kanban/assets/17794659/31b6f472-1b2b-4186-8f68-d23baf5f6f76">
+<img width="1000" alt="darkMode" src="https://github.com/fwesparza/kanban/assets/17794659/d1d272ff-96f5-45ea-a056-bce77694c299">
+
+
 
 ## Notes on the Code:
 
@@ -31,7 +36,7 @@ Using the App:
 ## Setup
 
 ### Set up PostgresQL
-1. Download PostgresQL
+1. Download PostgresQL [here](https://www.postgresql.org/download/)
 2. Start PostgresQL on your computer
 3. Open PostgresQL
 4. Open **Preferences...**
