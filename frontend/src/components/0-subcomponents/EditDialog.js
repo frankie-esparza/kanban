@@ -97,6 +97,7 @@ function EditDialog(
             open={formOpen}
             onClose={handleClose}
             PaperProps={{ component: 'form', onSubmit: handleSubmit }}
+            autocomplete="off"
         >
             {editFormSection}
             {subtasksList}

@@ -67,6 +67,7 @@ function AddDialog(
             open={formOpen}
             onClose={handleClose}
             PaperProps={{ component: 'form', onSubmit: handleSubmit }}
+            autocomplete="off"
         >
             {addFormSection}
         </Dialog >

@@ -33,6 +33,7 @@ function Input({ prop, itemType, formState, handleInputChange }) {
                 label={label}
                 required
                 autoFocus // focus stays on the textField until you click another field
+                autocomplete="off"
             />
         );
     } else {
