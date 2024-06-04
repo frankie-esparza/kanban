@@ -52,9 +52,7 @@ function EditDialog(
     );
 
     const addSubtaskButton = (
-        <Box sx={{ padding: 2 }}>
-            <AddButton itemType='subtask' />
-        </Box>
+        <AddButton itemType='subtask' />
     );
 
     const formHeader = (

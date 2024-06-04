@@ -40,7 +40,7 @@ export const getDesignTokens = (mode) => ({
                 }
                 : {
                     primary: white,
-                    secondary: darkGrey
+                    secondary: white
                 }),
         }
     },
