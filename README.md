@@ -1,13 +1,21 @@
 # Kanban
-Kanban is a full-stack task management app built with React, Express, PostgreSQL, Express, Node.js and Material UI. [What's Kanban?](https://en.wikipedia.org/wiki/Kanban_(development))
+A full-stack kanban-style task management app built with React, Node.js, Express, PostgreSQL, and Material UI. 
 
 ## Features
-### Add Tasks & Subtasks
+### ✅ Add Tasks
 <img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/kanban-1.gif" width="800">
 <br></br>
 
-### Update Status & Change Theme
+### 🏁 Update Status
 <img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/kanban-2.gif" width="800">
+<br></br>
+
+### ✅ Add Subtasks
+<img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/kanban-3.gif" width="800">
+<br></br>
+
+### 🌙 Dark Mode
+<img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/kanban-4.gif" width="800">
 <br></br>
 
 ## Setup
