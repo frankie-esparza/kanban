@@ -2,19 +2,19 @@
 A full stack kanban-style task management app built with React Context & Hooks, Node.js, Express, PostgreSQL, and Material UI. 
 
 ## Features
-### ✅ Add Tasks
+### Add Tasks
 <img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/kanban-1.gif" width="800">
 <br></br>
 
-### 🏁 Update Status
+### Update Status
 <img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/kanban-2.gif" width="800">
 <br></br>
 
-### ✅ Add Subtasks
+### Add Subtasks
 <img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/kanban-3.gif" width="800">
 <br></br>
 
-### 🌙 Dark Mode
+### Dark Mode
 <img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/kanban-4.gif" width="800">
 <br></br>
 
