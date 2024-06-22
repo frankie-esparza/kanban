@@ -1,5 +1,5 @@
 # Kanban
-A full-stack kanban-style task management app built with React, Node.js, Express, PostgreSQL, and Material UI. 
+A full-stack kanban-style task management app built with React Context & Hooks, Node.js, Express, PostgreSQL, and Material UI. 
 
 ## Features
 ### ✅ Add Tasks
