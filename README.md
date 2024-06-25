@@ -5,6 +5,11 @@ A full stack kanban-style task management app built with React Context & Hooks, 
 <br></br>
 
 ## Features
+- ✏️ Add tasks & subtasks
+- ✅ Update task status
+- 🌙 Dark Mode
+<br></br>
+
 ### Add Tasks
 <img src="https://storage.googleapis.com/frankie-esparza-portfolio/gifs/kanban-1.gif" width="800">
 <br></br>
