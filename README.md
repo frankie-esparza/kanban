@@ -1,5 +1,10 @@
 # Kanban
 A full stack kanban-style task management app built with React Context & Hooks, Node.js, Express, PostgreSQL, and Material UI. 
+<br></br>
+
+## Demo Video
+🎬 Watch the demo video at [frankie.engineer/highlights](https://frankie.engineer/highlights)
+<br></br>
 
 ## Features
 ### Add Tasks
